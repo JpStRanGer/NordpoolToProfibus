@@ -11,7 +11,7 @@ the NordpoolToProfibus application uses different hardware and open source proje
 - [DFRobot RS485 Shield V1.0](https://wiki.dfrobot.com/Arduino_RS485_Shield_SKU__DFR0259)
 - [Arduino Ethernet Shield](https://docs.arduino.cc/retired/shields/arduino-ethernet-shield-without-poe-module)
 ### Software
-- Arduino C
-- ArduinoJson.h - library for easy handling of Json data.
-- SPI.h - Serial library.
-- Ethernet.h - library for utilizing ethernet communication and sending/receive HTTP querys.
+- [Arduino C](https://www.arduino.cc/reference/en/libraries/) - Spessilized version of C++ made for programming arduino boards and other microcontrollers.
+- [ArduinoJson.h](https://arduinojson.org/) - library for easy handling of Json data.
+- [SPI.h](https://www.arduino.cc/reference/en/language/functions/communication/spi/) - Serial library.
+- [Ethernet.h](https://www.arduino.cc/reference/en/libraries/ethernet/) - library for utilizing ethernet communication and sending/receive HTTP querys.
