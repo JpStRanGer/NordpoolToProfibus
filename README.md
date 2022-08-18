@@ -15,3 +15,8 @@ the NordpoolToProfibus application uses different hardware and open source proje
 - [ArduinoJson.h](https://arduinojson.org/) - library for easy handling of Json data.
 - [SPI.h](https://www.arduino.cc/reference/en/language/functions/communication/spi/) - Serial library.
 - [Ethernet.h](https://www.arduino.cc/reference/en/libraries/ethernet/) - library for utilizing ethernet communication and sending/receive HTTP querys.
+
+## Launch
+> _TODO:_ How to run a project? Does a project has minimum hardware requirements? "We mentioned the libraries and their versions earlier. If necessary, technologies, launch, and hardware requirements can be merged together.\
+But if we split it into two subsections, it's worth to focus here specifically on launching a project. When we have a website or application, it can concerned setting up a local environment, a link to GitHub pages or deployed application on Heroku. Do we need input data? If so, in what format?"
+
