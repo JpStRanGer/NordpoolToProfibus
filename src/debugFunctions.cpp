@@ -1,9 +1,13 @@
+#include <Arduino.h>
+#include <Ethernet.h>
+
 //##########################
 // SERIAL FUNCTIONS
 //##########################
 //////////////////////////////////
 //// READ "ENTER" FROM SERIAL MONITOR
 //////////////////////////////////
+
 bool DEBUG_ReadSerial(){
   // Print message to SERIAL!
 //  Serial.println("---RUNNING function: DEBUG_ReadSerial()---");
@@ -100,7 +104,7 @@ void printPortStatus(){
 //// Function prints only one line!
 //////////////////////////////////
 //// PRINT ASCII & HEX
-void DEBUG_printOneLineFromHTTP(){
+void DEBUG_printOneLineFromHTTP(EthernetClient client){
   
   // Check HTTP status
   char status[250] = {0};
@@ -140,7 +144,7 @@ void DEBUG_printOneLineFromHTTP(){
     Serial.println();
 }
 //// PRINT HEX
-void DEBUG_printOneLineFromHTTP_HEX(){
+void DEBUG_printOneLineFromHTTP_HEX(EthernetClient client){
   
   // Check HTTP status
   byte status[32] = {0};
@@ -153,8 +157,9 @@ void DEBUG_printOneLineFromHTTP_HEX(){
   }
     Serial.println();
 }
+
 //// PRINT ASCII
-void DEBUG_printOneLineFromHTTP_ASCII(){
+void DEBUG_printOneLineFromHTTP_ASCII(EthernetClient client){
   
   // Check HTTP status
   char status[100] = {0};

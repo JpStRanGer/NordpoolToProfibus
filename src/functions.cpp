@@ -1,3 +1,6 @@
+#include <Arduino.h>
+#include <Ethernet.h>
+
 ///////////////////////////////////////////
 //Start serialcomunication for debugging
 ///////////////////////////////////////////
@@ -14,7 +17,7 @@ void startSerial() {
 ////////////////////////////////
 // Start Ethernet connection
 ////////////////////////////////
-void startEthernet() {
+void startEthernet(EthernetClient client, char server[]) {
   Serial.println("call function: startEthernet()");
   // Enter a MAC address for your controller below.
   // Newer Ethernet shields have a MAC address printed on a sticker on the shield
@@ -24,10 +27,11 @@ void startEthernet() {
   IPAddress ip(192, 168, 0, 177);
   IPAddress myDns(192, 168, 0, 1);
   
-    // start the Ethernet connection:
+  // start the Ethernet connection:
   Serial.println("Initialize Ethernet with DHCP:");
   if (Ethernet.begin(mac) == 0) {
     Serial.println("Failed to configure Ethernet using DHCP");
+
     // Check for Ethernet hardware present
     if (Ethernet.hardwareStatus() == EthernetNoHardware) {
       Serial.println("Ethernet shield was not found.  Sorry, can't run without hardware. :(");
@@ -70,7 +74,7 @@ void startEthernet() {
 ///////////////////////////////////////////
 // Check HTTP status
 ///////////////////////////////////////////
-bool checkHTTPstatus(){
+bool checkHTTPstatus(EthernetClient client){
   //resurving an data buffer for the incomming data
   char status[32] = {0};
   //read data from datastream (HTTP)
@@ -80,7 +84,7 @@ bool checkHTTPstatus(){
     Serial.println(F("Unexpected response: "));
     Serial.println("##########status START##########");
     Serial.println(status);
-    for (int i = 0; i < sizeof(status); i++) {Serial.print(status[i],HEX);Serial.print(" ");}
+    for (int i = 0; i < int(sizeof(status)); i++) {Serial.print(status[i],HEX);Serial.print(" ");}
     Serial.println();
     Serial.println("#########Status END#########");
     return false;
@@ -92,7 +96,7 @@ bool checkHTTPstatus(){
 ///////////////////////////////////////////
 // Skip HTTP headers
 ///////////////////////////////////////////
-bool SkipHTTPheaders(){
+bool SkipHTTPheaders(EthernetClient client){
   Serial.println("call function: SkipHTTPheaders()");
   //
   char endOfHeaders[] = "\r\n\r\n";

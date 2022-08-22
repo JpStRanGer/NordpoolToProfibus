@@ -1,4 +1,7 @@
-void json(){
+#include <ArduinoJson.h>
+#include <Ethernet.h>
+
+void json(EthernetClient client){
   
   Stream& input = client;
   
