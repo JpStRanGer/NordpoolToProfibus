@@ -24,4 +24,8 @@ But if we split it into two subsections, it's worth to focus here specifically o
 
 
 
-[Reference to Readme guide](https://bulldogjob.com/readme/how-to-write-a-good-readme-for-your-github-project) - how-to-write-a-good-readme-for-your-github-project
+\
+\
+\
+\
+[Reference to Readme guide](https://bulldogjob.com/readme/how-to-write-a-good-readme-for-your-github-project) -How to write a good readme for your github project.
