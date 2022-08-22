@@ -1,0 +1,48 @@
+void json(){
+  
+  Stream& input = client;
+  
+//  StaticJsonDocument<1024> doc;
+  DynamicJsonDocument doc(1024);
+  
+  DeserializationError error = deserializeJson(doc, input);
+  
+  if (error) {
+    Serial.print(F("deserializeJson() failed: "));
+    Serial.println(error.f_str());
+    Serial.print("doc.capacity: ");
+    Serial.println(doc.capacity());
+    return;
+  }
+  
+  for (JsonObject data_item : doc["data"].as<JsonArray>()) {
+  
+    const char* data_item_name = data_item["name"]; // "00 - 01", "01 - 02", "02 - 03", "03 - 04", ...
+    Serial.print("time of day: ");
+    Serial.print(data_item_name);
+    float data_item_value = data_item["value"]; // 2053.76, 2036.25, 2030.67, 2031.85, 2042.02, 2176.52, ...
+    Serial.print(", value: ");
+    Serial.println(data_item_value);
+  
+  }
+  
+  JsonObject meta = doc["meta"];
+  float meta_min = meta["min"]; // 1977.85
+    Serial.print(", meta_min: ");
+    Serial.println(meta_min);
+  float meta_max = meta["max"]; // 6533.37
+    Serial.print(", meta_max: ");
+    Serial.println(meta_max);
+  float meta_average = meta["average"]; // 2577.98
+    Serial.print(", meta_average: ");
+    Serial.println(meta_average);
+  float meta_peak = meta["peak"]; // 2678.39
+    Serial.print(", meta_peak: ");
+    Serial.println(meta_peak);
+  float meta_off_peak_1 = meta["off_peak_1"]; // 2652.87
+    Serial.print(", meta_off_peak_1: ");
+    Serial.println(meta_off_peak_1);
+  float meta_off_peak_2 = meta["off_peak_2"]; // 2126.95
+    Serial.print(", meta_off_peak_2: ");
+    Serial.println(meta_off_peak_2);
+}
