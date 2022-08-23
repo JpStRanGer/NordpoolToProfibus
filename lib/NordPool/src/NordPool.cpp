@@ -165,6 +165,9 @@ void NordPool::update()
     {
         Serial.println("## Skip HTTP headers FAILD! ##");
     }
+    
+    //are done with the update so client can disconnect
+    client.stop();
 }
 
 // Print stored values
