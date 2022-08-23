@@ -23,17 +23,21 @@ void setup()
     startSerial();
     startEthernet();
     NP.setServer(server);
-
+    NP.update();
+    NP.print();
 }
 
 void loop()
 {
-    static int i =0;
-    Serial.println(i++);
 
-    NP.update();
-    NP.print();
-    delay(15000);
+
+
+    // static int i = 0;
+    // Serial.println(i++);
+
+    // NP.update();
+    // NP.print();
+    // delay(15000);
     ////////////////////
     ////// DEBUG //////
     //////////////////
