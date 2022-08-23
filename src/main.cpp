@@ -23,6 +23,7 @@ void setup()
     startSerial();
     startEthernet();
     NP.setServer(server);
+
 }
 
 void loop()
