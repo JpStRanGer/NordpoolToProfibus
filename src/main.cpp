@@ -25,7 +25,7 @@ void setup()
     startSerial();
     startEthernet(server);
 
-    // checkHTTPstatus()?Serial.println("##HTTP status OK!##"):Serial.println("##HTTP status FAILD!##");
+    // checkHTTPstatus()?Serial.println("##HTTP status OK!##"):Serial.println("## HTTP status FAILD! ##");
     SkipHTTPheaders() ? Serial.println("## Skip HTTP headers OK! ##") : Serial.println("## Skip HTTP headers FAILD! ##");
 
     Serial.println("## Start json() ##");
