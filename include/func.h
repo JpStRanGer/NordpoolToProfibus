@@ -6,12 +6,11 @@
 #include <ArduinoJson.h>
 
 void startSerial();
-void startEthernet(char server[]);
+void startEthernet();
 bool checkHTTPstatus();
 bool SkipHTTPheaders();
 void json();
 
 extern EthernetClient client;
-extern int abc;
 
 #endif
