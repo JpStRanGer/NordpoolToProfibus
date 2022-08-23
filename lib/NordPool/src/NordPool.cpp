@@ -14,7 +14,7 @@ void NordPool::setServer(String server)
     server.toCharArray(_server, len);
 }
 
-int NordPool::connect()
+void NordPool::connect()
 {
 
     // if you get a connection, report back via serial:
@@ -152,7 +152,6 @@ NordPool::~NordPool()
 // Logon the internet, and get values from server.
 void NordPool::update()
 {
-<<<<<<< HEAD
     connect();
     // checkHTTPstatus()?Serial.println("##HTTP status OK!##"):Serial.println("##HTTP status FAILD!##");
     if (SkipHTTPheaders())
@@ -165,27 +164,6 @@ void NordPool::update()
     else
     {
         Serial.println("## Skip HTTP headers FAILD! ##");
-=======
-
-    if (connect())
-    {
-        // checkHTTPstatus()?Serial.println("##HTTP status OK!##"):Serial.println("##HTTP status FAILD!##");
-        if (SkipHTTPheaders())
-        {
-            Serial.println("## Skip HTTP headers OK! ##");
-            Serial.println("## Start json() ##");
-            json(); //?Serial.println("##HTTP status OK!##"):Serial.println("##HTTP status FAILD!##");;
-            Serial.println("## End json() ##");
-        }
-        else
-        {
-            Serial.println("## Skip HTTP headers FAILD! ##");
-        }
-    }
-    else
-    {
-        Serial.println("Connect error!");
->>>>>>> 409abbdeddd0d220577de3528d00271d85968c2b
     }
 }
 

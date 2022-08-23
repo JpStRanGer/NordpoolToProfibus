@@ -23,7 +23,7 @@ private:
     void json();
     bool checkHTTPstatus();
     bool SkipHTTPheaders();
-    int connect();
+    void connect();
 
 public:
     NordPool(String server);
