@@ -5,7 +5,7 @@
 // if you don't want to use DNS (and reduce your sketch size)
 // use the numeric IP instead of the name for the server:
 // IPAddress server(74,125,232,128);  // numeric IP for Google (no DNS)
-String server = "nordpoolveas.jonaspettersen.no"; // name address for Google (using DNS)
+char server[] = "nordpoolveas.jonaspettersen.no"; // name address for Google (using DNS)
 // char server[] = "www.google.com";    // name address for Google (using DNS)
 
 // Initialize the Ethernet client library
@@ -14,12 +14,12 @@ String server = "nordpoolveas.jonaspettersen.no"; // name address for Google (us
 // EthernetClient client;
 
 EthernetClient client;
+// NordPool NP(server);
 NordPool NP;
 
 void setup()
 {
 
-    
 
     // Open serial communications and wait for port to open:
     Serial.println("#START (Main): NP.startSerial()");

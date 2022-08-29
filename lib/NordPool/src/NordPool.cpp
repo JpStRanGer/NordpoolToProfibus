@@ -1,7 +1,7 @@
 #include "NordPool.h"
 /**
  * @brief Construct a new Nord Pool:: Nord Pool object
- * 
+ *
  */
 NordPool::NordPool()
 {
@@ -9,49 +9,101 @@ NordPool::NordPool()
 
 /**
  * @brief Construct a new Nord Pool:: Nord Pool object
- * 
+ *
  * @param server - URL for where the program should look for Json-data.
  */
 
 NordPool::NordPool(String server)
 {
+    Serial.println("#START (Construct): NP.NordPool()");
     // int len = server.length() + 1;
     // server.toCharArray(_server, len);
     this->setServer(server);
-
+    Serial.println("#END (Construct): NP.NordPool()");
 }
 
 /**
- * @brief 
- * 
+ * @brief Destroy the Nord Pool:: Nord Pool object
+ *
+ */
+NordPool::~NordPool()
+{
+}
+
+/**
+ * @brief Method sets servername on private propertie _server.
+ *
  * @param server - URL for where the program should look for Json-data.
  */
 void NordPool::setServer(String server)
 {
+    Serial.println("#START (setServer): NP.setServer()");
     int len = server.length() + 1;
     server.toCharArray(_server, len);
+    Serial.println("#END (setServer): NP.setServer()");
 }
 
 /**
  * @brief Starting serial interface
- * 
+ *
  */
-void NordPool::startSerial() {
-  // Open serial communications and wait for port to open:
-  Serial.begin(9600);
-  Serial.println("call function: startSerial()");
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB port only
-  }
-  Serial.println("Serial communication startet!");
+void NordPool::startSerial()
+{
+    // Open serial communications and wait for port to open:
+    Serial.begin(9600);
+    Serial.println("call function: startSerial()");
+    while (!Serial)
+    {
+        ; // wait for serial port to connect. Needed for native USB port only
+    }
+    Serial.println("Serial communication startet!");
 }
 
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 void NordPool::connect()
 {
+    // Enter a MAC address for your controller below.
+    // Newer Ethernet shields have a MAC address printed on a sticker on the shield
+    byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
+
+    // Set the static IP address to use if the DHCP fails to assign
+    IPAddress ip(192, 168, 0, 177);
+    IPAddress myDns(192, 168, 0, 1);
+
+    // start the Ethernet connection:
+    Serial.println("Initialize Ethernet with DHCP:");
+    if (Ethernet.begin(mac) == 0)
+    {
+        Serial.println("Failed to configure Ethernet using DHCP");
+        // Check for Ethernet hardware present
+        if (Ethernet.hardwareStatus() == EthernetNoHardware)
+        {
+            Serial.println("Ethernet shield was not found.  Sorry, can't run without hardware. :(");
+            while (true)
+            {
+                delay(1); // do nothing, no point running without Ethernet hardware
+            }
+        }
+        if (Ethernet.linkStatus() == LinkOFF)
+        {
+            Serial.println("Ethernet cable is not connected.");
+        }
+        // try to congifure using IP address instead of DHCP:
+        Ethernet.begin(mac, ip, myDns);
+    }
+    else
+    {
+        Serial.print("  DHCP assigned IP ");
+        Serial.println(Ethernet.localIP());
+    }
+    // give the Ethernet shield a second to initialize:
+    delay(1000);
+    Serial.print("connecting to ");
+    Serial.print(_server);
+    Serial.println("...");
 
     // if you get a connection, report back via serial:
 
@@ -69,7 +121,7 @@ void NordPool::connect()
     else
     {
         // if you didn't get a connection to the server:
-        Serial.println("connection failed");
+        Serial.println("NordPool::connect()  ->  connection failed");
     }
 };
 
@@ -181,12 +233,9 @@ void NordPool::json()
     Serial.println(_off_peak_2);
 }
 
-NordPool::~NordPool()
-{
-}
-
 // Logon the internet, and get values from server.
-void NordPool::update(){
+void NordPool::update()
+{
     connect();
     // checkHTTPstatus()?Serial.println("##HTTP status OK!##"):Serial.println("##HTTP status FAILD!##");
     if (SkipHTTPheaders())
@@ -203,7 +252,8 @@ void NordPool::update(){
 }
 
 // Print stored values
-void NordPool::printValues(){
+void NordPool::printValues()
+{
     Serial.print("00 - 01:\t");
     Serial.println(_prices[0]);
     Serial.print("01 - 02:\t");
