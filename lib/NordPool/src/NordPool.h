@@ -32,6 +32,7 @@ public:
     void setServer(String server);
     void update(); //Run to get new prices from server.
     void printValues();
+    void startSerial();
 
     float getMin();
     float getMax();

@@ -1,19 +1,55 @@
 #include "NordPool.h"
-
+/**
+ * @brief Construct a new Nord Pool:: Nord Pool object
+ * 
+ */
 NordPool::NordPool()
 {
 }
+
+/**
+ * @brief Construct a new Nord Pool:: Nord Pool object
+ * 
+ * @param server - URL for where the program should look for Json-data.
+ */
+
 NordPool::NordPool(String server)
 {
-    int len = server.length() + 1;
-    server.toCharArray(_server, len);
+    // int len = server.length() + 1;
+    // server.toCharArray(_server, len);
+    this->setServer(server);
+
 }
+
+/**
+ * @brief 
+ * 
+ * @param server - URL for where the program should look for Json-data.
+ */
 void NordPool::setServer(String server)
 {
     int len = server.length() + 1;
     server.toCharArray(_server, len);
 }
 
+/**
+ * @brief Starting serial interface
+ * 
+ */
+void NordPool::startSerial() {
+  // Open serial communications and wait for port to open:
+  Serial.begin(9600);
+  Serial.println("call function: startSerial()");
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for native USB port only
+  }
+  Serial.println("Serial communication startet!");
+}
+
+/**
+ * @brief 
+ * 
+ */
 void NordPool::connect()
 {
 

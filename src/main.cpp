@@ -18,10 +18,25 @@ NordPool NP;
 
 void setup()
 {
+
+    
+
     // Open serial communications and wait for port to open:
+    Serial.println("#START (Main): NP.startSerial()");
+    NP.startSerial();
+    Serial.println("#END (Main): NP.startSerial()\n");
+
+    Serial.println("#START (Main): NP.setServer()");
     NP.setServer(server);
+    Serial.println("#END (Main): NP.setServer()\n");
+
+    Serial.println("#START (Main): NP.update()");
     NP.update();
+    Serial.println("#END (Main): NP.update()\n");
+    
+    Serial.println("#START (Main): NP.printValues()");
     NP.printValues();
+    Serial.println("#END (Main): NP.printValues()\n");
 }
 
 void loop()
