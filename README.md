@@ -13,7 +13,6 @@ the NordpoolToProfibus application uses different hardware and open source proje
 ### Software
 - [Arduino C](https://www.arduino.cc/reference/en/libraries/) - Spessilized version of C++ made for programming arduino boards and other microcontrollers.
 - [ArduinoJson.h](https://arduinojson.org/) - library for easy handling of Json data.
-- [SPI.h](https://www.arduino.cc/reference/en/language/functions/communication/spi/) - Serial library.
 - [Ethernet.h](https://www.arduino.cc/reference/en/libraries/ethernet/) - library for utilizing ethernet communication and sending/receive HTTP querys.
 
 ## Launch
