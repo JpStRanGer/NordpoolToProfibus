@@ -1,13 +1,11 @@
 #include <Arduino.h>
 #include <Ethernet.h>
-#include "func.h"
-#include "NordPool.h"
-<<<<<<< HEAD
+#include <NordPool.h>
 
 // if you don't want to use DNS (and reduce your sketch size)
 // use the numeric IP instead of the name for the server:
 // IPAddress server(74,125,232,128);  // numeric IP for Google (no DNS)
-String server = "nordpoolveas.jonaspettersen.no"; // name address for Google (using DNS)
+char server[] = "nordpoolveas.jonaspettersen.no"; // name address for Google (using DNS)
 // char server[] = "www.google.com";    // name address for Google (using DNS)
 
 // Initialize the Ethernet client library
@@ -16,45 +14,33 @@ String server = "nordpoolveas.jonaspettersen.no"; // name address for Google (us
 // EthernetClient client;
 
 EthernetClient client;
+// NordPool NP(server);
 NordPool NP;
 
 void setup()
 {
+
+
     // Open serial communications and wait for port to open:
-    startSerial();
-    startEthernet();
+    Serial.println("#START (Main): NP.startSerial()");
+    NP.startSerial();
+    Serial.println("#END (Main): NP.startSerial()\n");
+
+    Serial.println("#START (Main): NP.setServer()");
     NP.setServer(server);
+    Serial.println("#END (Main): NP.setServer()\n");
+
+    Serial.println("#START (Main): NP.update()");
     NP.update();
-    NP.print();
-=======
-
-// if you don't want to use DNS (and reduce your sketch size)
-// use the numeric IP instead of the name for the server:
-// IPAddress server(74,125,232,128);  // numeric IP for Google (no DNS)
-String server = "nordpoolveas.jonaspettersen.no"; // name address for Google (using DNS)
-// char server[] = "www.google.com";    // name address for Google (using DNS)
-
-// Initialize the Ethernet client library
-// with the IP address and port of the server
-// that you want to connect to (port 80 is default for HTTP):
-// EthernetClient client;
-
-EthernetClient client;
-NordPool NP;
-
-void setup()
-{
-    // Open serial communications and wait for port to open:
-    startSerial();
-    startEthernet();
-    NP.setServer(server);
-
->>>>>>> 409abbdeddd0d220577de3528d00271d85968c2b
+    Serial.println("#END (Main): NP.update()\n");
+    
+    Serial.println("#START (Main): NP.printValues()");
+    NP.printValues();
+    Serial.println("#END (Main): NP.printValues()\n");
 }
 
 void loop()
 {
-<<<<<<< HEAD
 
 
 
@@ -64,14 +50,6 @@ void loop()
     // NP.update();
     // NP.print();
     // delay(15000);
-=======
-    static int i =0;
-    Serial.println(i++);
-
-    NP.update();
-    NP.print();
-    delay(15000);
->>>>>>> 409abbdeddd0d220577de3528d00271d85968c2b
     ////////////////////
     ////// DEBUG //////
     //////////////////

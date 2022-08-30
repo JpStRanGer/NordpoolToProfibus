@@ -23,7 +23,7 @@ private:
     void json();
     bool checkHTTPstatus();
     bool SkipHTTPheaders();
-    int connect();
+    void connect();
 
 public:
     NordPool(String server);
@@ -31,7 +31,8 @@ public:
     ~NordPool();
     void setServer(String server);
     void update(); //Run to get new prices from server.
-    void print();
+    void printValues();
+    void startSerial();
 
     float getMin();
     float getMax();
