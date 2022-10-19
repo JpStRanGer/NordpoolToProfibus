@@ -11,6 +11,7 @@ class NordPool
 {
 private:
     /* data */
+    char _server[40] = "nordpoolveas.jonaspettersen.no";    // name address for Google (using DNS)
     float _prices[24];
     float _min;
     float _max;
@@ -19,13 +20,13 @@ private:
     float _off_peak_1;
     float _off_peak_2;
     
-    char _server[40];
+    //char _server[40];
     void json();
     bool checkHTTPstatus();
     bool SkipHTTPheaders();
-    void connect();
 
 public:
+    void connect();
     NordPool(String server);
     NordPool();
     ~NordPool();
