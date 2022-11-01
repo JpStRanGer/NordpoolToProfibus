@@ -1,6 +1,6 @@
 /**
  * @file RESTReader.h
- * @author your name (you@domain.com)
+ * @author  Jonas Pettersen (Jonas.st.pettersen@gmail.com)
  * @brief
  * @version 0.1
  * @date 2022-10-28
