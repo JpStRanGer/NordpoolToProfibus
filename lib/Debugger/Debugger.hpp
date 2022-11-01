@@ -23,7 +23,7 @@ public:
         {
             ; // wait for serial port to connect. Needed for native USB port only
         }
-        Serial.println("Serial communication startet!");
+        Serial.println("\nSerial communication startet!\n");
     }
 };
 

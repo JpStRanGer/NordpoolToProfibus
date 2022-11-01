@@ -10,16 +10,19 @@
  */
 
 #include <Arduino.h>
-#include <Ethernet.h>
 #include <Debugger.hpp>
 #include <RESTReader.h>
 
 /// @brief
 Debugger debugger;
+RESTReader restReader;
+
 
 void setup()
 {
-    debugger.startSerial();
+    //debugger.startSerial();
+
+    restReader.test();
 }
 
 void loop()
