@@ -22,16 +22,19 @@ private:
     /// @brief PRIVATE PROPERTIES/METHODS
 public:
     /// @brief PUBLIC PROPERTIES
+    bool shouldDebug = true;
     EthernetClient client;
-    char server[100]; // name address for Google (using DNS)
+    char server[]; // name address for Google (using DNS)
 
     /// @brief PUBLIC METHODS
     RESTReader(); /// @brief Construct a new RESTReader object
     ~RESTReader(); /// @brief Destroy the RESTReader object
     void test();
     bool checkHTTPstatus();
+    bool SkipHTTPheaders();
     void startSerial();
-    // void Debug(char msg);
+    void printf(char *fmt, ... ); // Creating a printf() wrapper
+    void debug(String msg);
 };
 
 #endif

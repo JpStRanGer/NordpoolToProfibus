@@ -17,14 +17,14 @@
  */
 RESTReader::RESTReader()
 {
-    //this->startSerial();
-    //this->test();
-    //this->checkHTTPstatus();
+    // this->startSerial();
+    // this->test();
+    // this->checkHTTPstatus();
 }
 
 /**
  * @brief Destroy the RESTReader::RESTReader object
- * 
+ *
  */
 RESTReader::~RESTReader()
 {
@@ -32,7 +32,7 @@ RESTReader::~RESTReader()
 
 /**
  * @brief Method for testing vital functions
- * 
+ *
  */
 void RESTReader::test()
 {
@@ -102,7 +102,7 @@ void RESTReader::test()
 }
 /**
  * @brief Check HTTP status
- * 
+ *
  * @return true if status is okey
  * @return false if status is bad
  */
@@ -113,6 +113,10 @@ bool RESTReader::checkHTTPstatus()
     // read data from datastream (HTTP)
     client.readBytesUntil(0x0D, status, sizeof(status));
     // check if data contain the wanted information.
+    Serial.print("DEBUG: print status -> ");
+    Serial.println(status);
+    Serial.println(strcmp(status, "HTTP/1.1 200 OK"));
+
     if (strcmp(status, "HTTP/1.1 200 OK") != 0)
     {
         Serial.println(F("Unexpected response: "));
@@ -127,6 +131,35 @@ bool RESTReader::checkHTTPstatus()
         Serial.println("#########Status END#########");
         return false;
     }
+
+    Serial.println("DEBUG HTTP status OK!\n");
+    return true;
+}
+
+/**
+ * @brief Skip HTTP headers
+ *
+ * @return true if HTTP headers skipped OK
+ * @return false if Invalid response
+ */
+bool RESTReader::SkipHTTPheaders()
+{
+    Serial.println("call function: SkipHTTPheaders()");
+    //
+    char endOfHeaders[] = "\r\n\r\n";
+    if (!client.find(endOfHeaders))
+    {
+        Serial.println(F("Invalid response"));
+        return false;
+    }
+
+    while (client.available() && client.peek() != '{')
+    {
+        char c = 0;
+        client.readBytes(&c, 1);
+        //    Serial.print("BAD CARACTER: ");
+        //    Serial.println(c);
+    }
     return true;
 }
 
@@ -134,11 +167,11 @@ bool RESTReader::checkHTTPstatus()
  * @brief Start Serialcommunication
  *
  */
-void RESTReader::RESTReader::startSerial()
+void RESTReader::startSerial()
 {
     // Open serial communications and wait for port to open:
-    //if (!Serial)
-        Serial.begin(9600);
+    // if (!Serial)
+    Serial.begin(9600);
 
     Serial.println("call function: startSerial()");
     while (!Serial)
@@ -146,4 +179,30 @@ void RESTReader::RESTReader::startSerial()
         ; // wait for serial port to connect. Needed for native USB port only
     }
     Serial.println("Serial communication startet!");
+}
+
+/**
+ * @brief Creating a printf() wrapper
+ * @ref https://playground.arduino.cc/Main/Printf/
+ * 
+ * @param fmt is input STRING ex. printf("this is a %s","text") prints: this is a text
+ * @param ... 
+ */
+void RESTReader::printf(char *fmt, ...)
+{
+    char buf[128]; // resulting string limited to 128 chars
+    va_list args;
+    va_start(args, fmt);
+    vsnprintf(buf, 128, fmt, args);
+    va_end(args);
+    Serial.print(buf);
+}
+
+void RESTReader::debug(String msg)
+{
+    if (!this->shouldDebug)
+        return;
+
+    Serial.print("DEBUG: ");
+    Serial.println(msg);
 }
