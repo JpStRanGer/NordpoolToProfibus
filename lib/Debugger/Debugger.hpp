@@ -33,7 +33,6 @@ public:
         Serial.println("Serial communication startet!");
     }
 
-    void send(NordPool data);
 };
 
 #endif
