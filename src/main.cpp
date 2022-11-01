@@ -20,9 +20,10 @@ RESTReader restReader;
 
 void setup()
 {
-    //debugger.startSerial();
+    debugger.startSerial();
 
     restReader.test();
+    restReader.checkHTTPstatus();
 }
 
 void loop()

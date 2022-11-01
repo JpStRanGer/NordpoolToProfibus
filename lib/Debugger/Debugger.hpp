@@ -13,6 +13,7 @@ public:
      */
     Debugger()
     {
+       // this->startSerial();
     }
 
     void startSerial()
@@ -23,7 +24,7 @@ public:
         {
             ; // wait for serial port to connect. Needed for native USB port only
         }
-        Serial.println("\nSerial communication startet!\n");
+        Serial.println("\nSerial communication startet!\n\n");
     }
 };
 

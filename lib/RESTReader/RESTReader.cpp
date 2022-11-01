@@ -16,10 +16,24 @@
  *
  */
 RESTReader::RESTReader()
-// RESTReader()
+{
+    //this->startSerial();
+    //this->test();
+    //this->checkHTTPstatus();
+}
+
+/**
+ * @brief Destroy the RESTReader::RESTReader object
+ * 
+ */
+RESTReader::~RESTReader()
 {
 }
 
+/**
+ * @brief Method for testing vital functions
+ * 
+ */
 void RESTReader::test()
 {
     Serial.println("running test() from RESTReader...");
@@ -86,7 +100,12 @@ void RESTReader::test()
         Serial.println("connection failed");
     }
 }
-
+/**
+ * @brief Check HTTP status
+ * 
+ * @return true if status is okey
+ * @return false if status is bad
+ */
 bool RESTReader::checkHTTPstatus()
 {
     // resurving an data buffer for the incomming data
@@ -118,7 +137,7 @@ bool RESTReader::checkHTTPstatus()
 void RESTReader::RESTReader::startSerial()
 {
     // Open serial communications and wait for port to open:
-    if (!Serial)
+    //if (!Serial)
         Serial.begin(9600);
 
     Serial.println("call function: startSerial()");

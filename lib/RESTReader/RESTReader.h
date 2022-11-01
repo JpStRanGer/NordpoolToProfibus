@@ -27,7 +27,7 @@ public:
 
     /// @brief PUBLIC METHODS
     RESTReader(); /// @brief Construct a new RESTReader object
-    // ~RESTReader(); /// @brief Destroy the RESTReader object
+    ~RESTReader(); /// @brief Destroy the RESTReader object
     void test();
     bool checkHTTPstatus();
     void startSerial();
