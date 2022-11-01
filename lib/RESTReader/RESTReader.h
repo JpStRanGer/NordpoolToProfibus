@@ -12,6 +12,9 @@
 #define RESTReader_h
 
 #include <Arduino.h>
+#include <ArduinoJson.h>
+#include <SPI.h>
+#include <Ethernet.h>
 
 class RESTReader
 {

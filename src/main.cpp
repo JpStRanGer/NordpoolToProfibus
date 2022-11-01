@@ -3,12 +3,12 @@
 #include <Debugger.hpp>
 #include <RESTReader.h>
 
-/// @brief 
-//Debugger debugger();
+/// @brief
+Debugger debugger;
 
 void setup()
 {
-  //  debugger.startSerial();
+    debugger.startSerial();
 }
 
 void loop()
