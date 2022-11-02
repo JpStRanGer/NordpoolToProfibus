@@ -34,7 +34,7 @@ public:
     bool SkipHTTPheaders();
     void startSerial();
     void printf(char *fmt, ... ); // Creating a printf() wrapper
-    void debug(String msg);
+    void debug(char *msg);
 };
 
 #endif

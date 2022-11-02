@@ -144,7 +144,9 @@ bool RESTReader::checkHTTPstatus()
  */
 bool RESTReader::SkipHTTPheaders()
 {
+    debug("before");
     Serial.println("call function: SkipHTTPheaders()");
+    debug("after");
     //
     char endOfHeaders[] = "\r\n\r\n";
     if (!client.find(endOfHeaders))
@@ -152,13 +154,13 @@ bool RESTReader::SkipHTTPheaders()
         Serial.println(F("Invalid response"));
         return false;
     }
-
+    this->debug("kasdlknjasdfkl");
     while (client.available() && client.peek() != '{')
     {
         char c = 0;
         client.readBytes(&c, 1);
-        //    Serial.print("BAD CARACTER: ");
-        //    Serial.println(c);
+           Serial.print("BAD CARACTER: ");
+           Serial.println(c);
     }
     return true;
 }
@@ -198,7 +200,7 @@ void RESTReader::printf(char *fmt, ...)
     Serial.print(buf);
 }
 
-void RESTReader::debug(String msg)
+void RESTReader::debug(char *msg)
 {
     if (!this->shouldDebug)
         return;
