@@ -36,7 +36,7 @@ RESTReader::~RESTReader()
  */
 void RESTReader::test()
 {
-    Serial.println("running test() from RESTReader...");
+    debug("running test() from RESTReader...");
 
     // this->server  = "nordpoolveas.jonaspettersen.no";
     sprintf(server, "nordpoolveas.jonaspettersen.no"); // Write con.string to array
@@ -113,9 +113,6 @@ bool RESTReader::checkHTTPstatus()
     // read data from datastream (HTTP)
     client.readBytesUntil(0x0D, status, sizeof(status));
     // check if data contain the wanted information.
-    Serial.print("DEBUG: print status -> ");
-    Serial.println(status);
-    Serial.println(strcmp(status, "HTTP/1.1 200 OK"));
 
     if (strcmp(status, "HTTP/1.1 200 OK") != 0)
     {
@@ -144,17 +141,18 @@ bool RESTReader::checkHTTPstatus()
  */
 bool RESTReader::SkipHTTPheaders()
 {
-    debug("before");
     Serial.println("call function: SkipHTTPheaders()");
-    debug("after");
-    //
+
+
     char endOfHeaders[] = "\r\n\r\n";
     if (!client.find(endOfHeaders))
     {
         Serial.println(F("Invalid response"));
         return false;
     }
-    this->debug("kasdlknjasdfkl");
+
+
+
     while (client.available() && client.peek() != '{')
     {
         char c = 0;
@@ -205,6 +203,56 @@ void RESTReader::debug(char *msg)
     if (!this->shouldDebug)
         return;
 
-    Serial.print("DEBUG: ");
-    Serial.println(msg);
+
+    char buff[180];
+    sprintf(buff,"DEBUG:\t%s\n",msg);
+    Serial.print(buff);
+
+    // Serial.print("DEBUG: ");
+    // Serial.println(msg);
+}
+
+/**
+ * @brief DEBUG DUNCTIONS
+ * print one Line of the inncomming data i client
+ * 
+ */
+void RESTReader::DEBUG_printOneLineFromHTTP(){
+  
+  // Check HTTP status
+  char status[250] = {0};
+  client.readBytesUntil('\r\n', status, sizeof(status));
+  //Serial.print(F("Serial response: "));
+  for (int i = 0; i< sizeof(status);i++){
+      switch(status[i]){
+        case 0x0A:
+          Serial.print("0A");
+          break;
+        case 0x0D:
+          Serial.print("0D");
+          break;
+        default:
+          Serial.print(status[i],HEX);
+          break;
+      }
+    //Serial.print(status[i],HEX);
+    //Serial.print(status[i],BIN);
+    Serial.print(" ");
+  }
+    Serial.println();
+  for (int i = 0; i< sizeof(status);i++){
+      switch(status[i]){
+        case 0x0A:
+          Serial.print("0A");
+          break;
+        case 0x0D:
+          Serial.print("0D");
+          break;
+        default:
+          Serial.print(status[i]);
+          break;
+      }
+    //Serial.print(status[i]);
+  }
+    Serial.println();
 }

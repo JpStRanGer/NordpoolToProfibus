@@ -17,15 +17,18 @@
 Debugger debugger;
 RESTReader restReader;
 
+
 void setup()
 {
     debugger.startSerial();
 
     restReader.test();
     restReader.checkHTTPstatus();
-    restReader.SkipHTTPheaders();
+    //restReader.SkipHTTPheaders();
 }
 
 void loop()
 {
+    restReader.DEBUG_printOneLineFromHTTP();
+    Serial.print("\n");delay(1000);
 }
