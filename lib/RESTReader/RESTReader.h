@@ -36,6 +36,7 @@ public:
     void printf(char *fmt, ... ); // Creating a printf() wrapper
     void debug(char *msg);
     void DEBUG_printOneLineFromHTTP();
+    void json();
 };
 
 #endif

@@ -24,11 +24,12 @@ void setup()
 
     restReader.test();
     restReader.checkHTTPstatus();
-    //restReader.SkipHTTPheaders();
+    restReader.SkipHTTPheaders();
+    restReader.json();
 }
 
 void loop()
 {
-    restReader.DEBUG_printOneLineFromHTTP();
-    Serial.print("\n");delay(1000);
+    // restReader.DEBUG_printOneLineFromHTTP();
+    // Serial.print("\n");delay(1000);
 }
