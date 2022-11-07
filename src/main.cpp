@@ -17,6 +17,7 @@
 Debugger debugger;
 RESTReader restReader;
 
+
 void setup()
 {
     debugger.startSerial();
@@ -24,8 +25,11 @@ void setup()
     restReader.test();
     restReader.checkHTTPstatus();
     restReader.SkipHTTPheaders();
+    restReader.json();
 }
 
 void loop()
 {
+    // restReader.DEBUG_printOneLineFromHTTP();
+    // Serial.print("\n");delay(1000);
 }
