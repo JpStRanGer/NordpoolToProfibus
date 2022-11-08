@@ -26,20 +26,20 @@ void setup()
     restReader.checkHTTPstatus();
     restReader.SkipHTTPheaders();
     restReader.json();
-    restReader.printPrizes();
+    restReader.printPrizesSerial();
 
-    prices data = restReader.getPrices();
-    for (float price : data.prices)
+    Prices prices = restReader.getPrices();
+    for (float price : prices.prices)
     {
         Serial.println(price);
     }
-    Serial.println(data.average);
-    Serial.println(data.max);
-    Serial.println(data.min);
-    Serial.println(data.off_peak_1);
-    Serial.println(data.off_peak_2);
-    Serial.println(data.off_peak_2);
-    Serial.println(data.peak);
+    Serial.println(prices.average);
+    Serial.println(prices.max);
+    Serial.println(prices.min);
+    Serial.println(prices.off_peak_1);
+    Serial.println(prices.off_peak_2);
+    Serial.println(prices.off_peak_2);
+    Serial.println(prices.peak);
 }
 
 void loop()

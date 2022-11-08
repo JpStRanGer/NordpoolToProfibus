@@ -31,7 +31,7 @@ private:
 
 public:
     /// PUBLIC PROPERTIES
-    prices data; 
+    Prices prices; 
     bool shouldDebug = true;
     EthernetClient client;
     char server[]; // name address for Google (using DNS)
@@ -47,8 +47,8 @@ public:
     void debug(char *msg);
     void DEBUG_printOneLineFromHTTP();
     void json();
-    void printPrizes();
-    prices getPrices();
+    void printPrizesSerial();
+    Prices getPrices();
 
 };
 

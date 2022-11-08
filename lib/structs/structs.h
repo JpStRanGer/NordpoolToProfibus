@@ -1,6 +1,6 @@
 #ifndef structs_h
 #define structs_h
-struct prices
+struct Prices
 {
     float prices[24];
     float min;

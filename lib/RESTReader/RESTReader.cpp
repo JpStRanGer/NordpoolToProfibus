@@ -108,11 +108,11 @@ void RESTReader::test()
  */
 bool RESTReader::checkHTTPstatus()
 {
-    // resurving an data buffer for the incomming data
+    // resurving an prices buffer for the incomming prices
     char status[32] = {0};
-    // read data from datastream (HTTP)
+    // read prices from pricesstream (HTTP)
     client.readBytesUntil(0x0D, status, sizeof(status));
-    // check if data contain the wanted information.
+    // check if prices contain the wanted information.
 
     if (strcmp(status, "HTTP/1.1 200 OK") != 0)
     {
@@ -210,7 +210,7 @@ void RESTReader::debug(char *msg)
 
 /**
  * @brief DEBUG DUNCTIONS
- * print one Line of the inncomming data i client
+ * print one Line of the inncomming prices i client
  *
  */
 void RESTReader::DEBUG_printOneLineFromHTTP()
@@ -259,7 +259,7 @@ void RESTReader::DEBUG_printOneLineFromHTTP()
 }
 
 /**
- * @brief Converting Json data to arduino C types.
+ * @brief Converting Json prices to arduino C types.
  *
  */
 void RESTReader::json()
@@ -281,40 +281,44 @@ void RESTReader::json()
         return;
     }
     int i = 0;
-    for (JsonObject data_item : doc["data"].as<JsonArray>())
+    for (JsonObject prices_item : doc["prices"].as<JsonArray>())
     {
 
-        const char *data_item_name = data_item["name"]; // "00 - 01", "01 - 02", "02 - 03", "03 - 04", ...
-        float data_item_value = data_item["value"];     // 2053.76, 2036.25, 2030.67, 2031.85, 2042.02, 2176.52, ...
+        const char *prices_item_name = prices_item["name"]; // "00 - 01", "01 - 02", "02 - 03", "03 - 04", ...
+        float prices_item_value = prices_item["value"];     // 2053.76, 2036.25, 2030.67, 2031.85, 2042.02, 2176.52, ...
 
         /* Set values to the class variable*/
         // String hour_s = "";
-        // hour_s.concat(data_item_name[0]);
-        // // hour_s.concat(data_item_name[1]);
+        // hour_s.concat(prices_item_name[0]);
+        // // hour_s.concat(prices_item_name[1]);
         // byte hour = hour_s.toInt();
-        // _prices[hour] = data_item_value;
+        // _prices[hour] = prices_item_value;
 
-        _prices[i] = data_item_value;
-        this->data.prices[i] = data_item_value;
+        _prices[i] = prices_item_value;
+        this->prices.prices[i] = prices_item_value;
         i++;
     }
 
     JsonObject meta = doc["meta"];
-    this->data.min = meta["min"];               // 1977.85
-    this->data.min = meta["min"];               // 1977.85
+    this->prices.min = meta["min"];               // 1977.85
+    this->prices.min = meta["min"];               // 1977.85
     this->_max = meta["max"];               // 6533.37
-    this->data.max = meta["max"];               // 6533.37
+    this->prices.max = meta["max"];               // 6533.37
     this->_average = meta["average"];       // 2577.98
-    this->data.average = meta["average"];       // 2577.98
+    this->prices.average = meta["average"];       // 2577.98
     this->_peak = meta["peak"];             // 2678.39
-    this->data.peak = meta["peak"];             // 2678.39
+    this->prices.peak = meta["peak"];             // 2678.39
     this->_off_peak_1 = meta["off_peak_1"]; // 2652.87
-    this->data.off_peak_1 = meta["off_peak_1"]; // 2652.87
+    this->prices.off_peak_1 = meta["off_peak_1"]; // 2652.87
     this->_off_peak_2 = meta["off_peak_2"]; // 2126.95
-    this->data.off_peak_2 = meta["off_peak_2"]; // 2126.95
+    this->prices.off_peak_2 = meta["off_peak_2"]; // 2126.95
 }
 
-void RESTReader::printPrizes()
+/**
+ * @brief Prints all Class/price values on to serial monitor.
+ * 
+ */
+void RESTReader::printPrizesSerial()
 {
     for (float prize : this->_prices)
     {
@@ -338,7 +342,12 @@ void RESTReader::printPrizes()
     Serial.println(this->_off_peak_2);
 }
 
-prices RESTReader::getPrices()
+/**
+ * @brief Get Prices
+ * 
+ * @return a structure (struct) of prices, containing all the prices. 
+ */
+Prices RESTReader::getPrices()
 {
-    return this->data;
+    return this->prices;
 }
