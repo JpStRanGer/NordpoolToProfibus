@@ -12,6 +12,7 @@
 #include <Arduino.h>
 #include <Debugger.hpp>
 #include <RESTReader.h>
+#include <structs.h>
 
 /// @brief
 Debugger debugger;
@@ -26,6 +27,7 @@ void setup()
     restReader.checkHTTPstatus();
     restReader.SkipHTTPheaders();
     restReader.json();
+    restReader.printPrizes();
 }
 
 void loop()

@@ -13,20 +13,30 @@
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
-#include <SPI.h>
+//#include <SPI.h>
 #include <Ethernet.h>
+#include <structs.h>
 
 class RESTReader
 {
 private:
-    /// @brief PRIVATE PROPERTIES/METHODS
+    /// PRIVATE PROPERTIES/METHODS
+    float _prices[24];
+    float _min;
+    float _max;
+    float _average;
+    float _peak;
+    float _off_peak_1;
+    float _off_peak_2;
+
 public:
-    /// @brief PUBLIC PROPERTIES
+    /// PUBLIC PROPERTIES
+    prices data; 
     bool shouldDebug = true;
     EthernetClient client;
     char server[]; // name address for Google (using DNS)
 
-    /// @brief PUBLIC METHODS
+    /// PUBLIC METHODS
     RESTReader(); /// @brief Construct a new RESTReader object
     ~RESTReader(); /// @brief Destroy the RESTReader object
     void test();
@@ -37,6 +47,9 @@ public:
     void debug(char *msg);
     void DEBUG_printOneLineFromHTTP();
     void json();
+    void printPrizes();
+    prices getPrices();
+
 };
 
 #endif

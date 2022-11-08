@@ -129,7 +129,7 @@ bool RESTReader::checkHTTPstatus()
         return false;
     }
 
-    Serial.println("DEBUG HTTP status OK!\n");
+    this->debug("HTTP status OK!\n");
     return true;
 }
 
@@ -280,35 +280,59 @@ void RESTReader::json()
         Serial.println(doc.capacity());
         return;
     }
-
+    int i = 0;
     for (JsonObject data_item : doc["data"].as<JsonArray>())
     {
 
         const char *data_item_name = data_item["name"]; // "00 - 01", "01 - 02", "02 - 03", "03 - 04", ...
-        Serial.print("time of day: ");
-        Serial.print(data_item_name);
-        float data_item_value = data_item["value"]; // 2053.76, 2036.25, 2030.67, 2031.85, 2042.02, 2176.52, ...
-        Serial.print(", value: ");
-        Serial.println(data_item_value);
+        float data_item_value = data_item["value"];     // 2053.76, 2036.25, 2030.67, 2031.85, 2042.02, 2176.52, ...
+
+        /* Set values to the class variable*/
+        // String hour_s = "";
+        // hour_s.concat(data_item_name[0]);
+        // // hour_s.concat(data_item_name[1]);
+        // byte hour = hour_s.toInt();
+        // _prices[hour] = data_item_value;
+
+        _prices[i] = data_item_value;
+        this->data.prices[i] = data_item_value;
+        i++;
     }
 
     JsonObject meta = doc["meta"];
-    float meta_min = meta["min"]; // 1977.85
+    this->_min = meta["min"];               // 1977.85
+    this->_max = meta["max"];               // 6533.37
+    this->_average = meta["average"];       // 2577.98
+    this->_peak = meta["peak"];             // 2678.39
+    this->_off_peak_1 = meta["off_peak_1"]; // 2652.87
+    this->_off_peak_2 = meta["off_peak_2"]; // 2126.95
+}
+
+void RESTReader::printPrizes()
+{
+    for (float prize : this->_prices)
+    {
+        Serial.print("time of day: ");
+        // Serial.print(prize);
+        Serial.print(", value: ");
+        Serial.println(prize);
+    }
+
     Serial.print(", meta_min: ");
-    Serial.println(meta_min);
-    float meta_max = meta["max"]; // 6533.37
+    Serial.println(this->_min);
     Serial.print(", meta_max: ");
-    Serial.println(meta_max);
-    float meta_average = meta["average"]; // 2577.98
+    Serial.println(this->_max);
     Serial.print(", meta_average: ");
-    Serial.println(meta_average);
-    float meta_peak = meta["peak"]; // 2678.39
+    Serial.println(this->_average);
     Serial.print(", meta_peak: ");
-    Serial.println(meta_peak);
-    float meta_off_peak_1 = meta["off_peak_1"]; // 2652.87
+    Serial.println(this->_peak);
     Serial.print(", meta_off_peak_1: ");
-    Serial.println(meta_off_peak_1);
-    float meta_off_peak_2 = meta["off_peak_2"]; // 2126.95
+    Serial.println(this->_off_peak_1);
     Serial.print(", meta_off_peak_2: ");
-    Serial.println(meta_off_peak_2);
+    Serial.println(this->_off_peak_2);
+}
+
+prices RESTReader::getPrices()
+{
+    return this->data;
 }
