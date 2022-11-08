@@ -18,7 +18,6 @@
 Debugger debugger;
 RESTReader restReader;
 
-
 void setup()
 {
     debugger.startSerial();
@@ -28,6 +27,19 @@ void setup()
     restReader.SkipHTTPheaders();
     restReader.json();
     restReader.printPrizes();
+
+    prices data = restReader.getPrices();
+    for (float price : data.prices)
+    {
+        Serial.println(price);
+    }
+    Serial.println(data.average);
+    Serial.println(data.max);
+    Serial.println(data.min);
+    Serial.println(data.off_peak_1);
+    Serial.println(data.off_peak_2);
+    Serial.println(data.off_peak_2);
+    Serial.println(data.peak);
 }
 
 void loop()

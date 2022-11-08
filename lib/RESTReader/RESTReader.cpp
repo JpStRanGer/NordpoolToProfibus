@@ -300,12 +300,18 @@ void RESTReader::json()
     }
 
     JsonObject meta = doc["meta"];
-    this->_min = meta["min"];               // 1977.85
+    this->data.min = meta["min"];               // 1977.85
+    this->data.min = meta["min"];               // 1977.85
     this->_max = meta["max"];               // 6533.37
+    this->data.max = meta["max"];               // 6533.37
     this->_average = meta["average"];       // 2577.98
+    this->data.average = meta["average"];       // 2577.98
     this->_peak = meta["peak"];             // 2678.39
+    this->data.peak = meta["peak"];             // 2678.39
     this->_off_peak_1 = meta["off_peak_1"]; // 2652.87
+    this->data.off_peak_1 = meta["off_peak_1"]; // 2652.87
     this->_off_peak_2 = meta["off_peak_2"]; // 2126.95
+    this->data.off_peak_2 = meta["off_peak_2"]; // 2126.95
 }
 
 void RESTReader::printPrizes()
