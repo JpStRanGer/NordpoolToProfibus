@@ -6,6 +6,8 @@
 class Debugger
 {
 private:
+
+
 public:
     /**
      * @brief Construct a new Profibus object
@@ -13,19 +15,24 @@ public:
      */
     Debugger()
     {
-       // this->startSerial();
+
+
     }
+
 
     void startSerial()
     {
         // Open serial communications and wait for port to open:
         Serial.begin(9600);
-        while (!Serial)
-        {
-            ; // wait for serial port to connect. Needed for native USB port only
-        }
-        Serial.println("\nSerial communication startet!\n\n");
+        Serial.println("Jonas");
+        Serial.println("call function: startSerial()");
+        // while (!Serial)
+        // {
+        //     ; // wait for serial port to connect. Needed for native USB port only
+        // }
+        Serial.println("Serial communication startet!");
     }
+
 };
 
 #endif
