@@ -264,7 +264,7 @@ void RESTReader::DEBUG_printOneLineFromHTTP()
  */
 void RESTReader::json()
 {
-
+    Serial.println("Start Json...");
     Stream &input = client;
 
     StaticJsonDocument<1024> doc;
@@ -281,26 +281,20 @@ void RESTReader::json()
         return;
     }
     int i = 0;
-    for (JsonObject prices_item : doc["prices"].as<JsonArray>())
+    Serial.println("Start FOR-loop...");
+    for (JsonObject prices_item : doc["data"].as<JsonArray>())
     {
-
         const char *prices_item_name = prices_item["name"]; // "00 - 01", "01 - 02", "02 - 03", "03 - 04", ...
         float prices_item_value = prices_item["value"];     // 2053.76, 2036.25, 2030.67, 2031.85, 2042.02, 2176.52, ...
-
-        /* Set values to the class variable*/
-        // String hour_s = "";
-        // hour_s.concat(prices_item_name[0]);
-        // // hour_s.concat(prices_item_name[1]);
-        // byte hour = hour_s.toInt();
-        // _prices[hour] = prices_item_value;
 
         _prices[i] = prices_item_value;
         this->prices.prices[i] = prices_item_value;
         i++;
     }
-
+    Serial.println("Start META-data...");
     JsonObject meta = doc["meta"];
-    this->prices.min = meta["min"];               // 1977.85
+
+    this->_min = meta["min"];               // 1977.85
     this->prices.min = meta["min"];               // 1977.85
     this->_max = meta["max"];               // 6533.37
     this->prices.max = meta["max"];               // 6533.37

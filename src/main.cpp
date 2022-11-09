@@ -28,22 +28,22 @@ void setup()
     restReader.json();
     restReader.printPrizesSerial();
 
-    Prices prices = restReader.getPrices();
-    for (float price : prices.prices)
-    {
-        Serial.println(price);
-    }
-    Serial.println(prices.average);
-    Serial.println(prices.max);
-    Serial.println(prices.min);
-    Serial.println(prices.off_peak_1);
-    Serial.println(prices.off_peak_2);
-    Serial.println(prices.off_peak_2);
-    Serial.println(prices.peak);
+    // Prices prices = restReader.getPrices();
+    // for (float price : prices.prices)
+    // {
+    //     Serial.println(price);
+    // }
+    // Serial.println(prices.average);
+    // Serial.println(prices.max);
+    // Serial.println(prices.min);
+    // Serial.println(prices.off_peak_1);
+    // Serial.println(prices.off_peak_2);
+    // Serial.println(prices.off_peak_2);
+    // Serial.println(prices.peak);
 }
 
 void loop()
 {
-    // restReader.DEBUG_printOneLineFromHTTP();
+    //restReader.DEBUG_printOneLineFromHTTP();
     // Serial.print("\n");delay(1000);
 }
