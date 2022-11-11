@@ -11,22 +11,33 @@
 
 #include <Arduino.h>
 #include <Debugger.hpp>
+#include <Modbus.hpp>
 #include <RESTReader.h>
 #include <structs.h>
 
 /// @brief
 Debugger debugger;
-RESTReader restReader;
+JpModbus modbus;
+Prices prices;
 
 void setup()
 {
     debugger.startSerial();
 
+    RESTReader restReader;
     restReader.test();
     restReader.checkHTTPstatus();
     restReader.SkipHTTPheaders();
     restReader.json();
     restReader.printPrizesSerial();
+    restReader.convertPriceUnit();
+    restReader.printPrizesSerial();
+    
+    prices = restReader.getPrices();
+    restReader.~RESTReader();
+
+    modbus.Begin();
+    modbus.updateHoldingRegister(prices);
 
     // Prices prices = restReader.getPrices();
     // for (float price : prices.prices)
@@ -40,10 +51,15 @@ void setup()
     // Serial.println(prices.off_peak_2);
     // Serial.println(prices.off_peak_2);
     // Serial.println(prices.peak);
+
 }
 
 void loop()
 {
-    //restReader.DEBUG_printOneLineFromHTTP();
-    // Serial.print("\n");delay(1000);
+    // delay(1000);
+    // modbus.updateHoldingRegister(prices);
+    modbus.pollDataOnce();
+    // restReader.DEBUG_printOneLineFromHTTP();
+    // //  Serial.print("\n");delay(1000);
+    // delay(1000);
 }

@@ -49,6 +49,7 @@ public:
     void json();
     void printPrizesSerial();
     Prices getPrices();
+    void convertPriceUnit();
 
 };
 
