@@ -47,7 +47,7 @@ void RESTReader::test()
     byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
 
     // Set the static IP address to use if the DHCP fails to assign
-    IPAddress ip(192, 168, 0, 177);
+    IPAddress ip(192, 168, 100, 105);
     IPAddress myDns(192, 168, 0, 1);
 
     // start the Ethernet connection:
@@ -100,6 +100,7 @@ void RESTReader::test()
         Serial.println("connection failed");
     }
 }
+
 /**
  * @brief Check HTTP status
  *

@@ -1,6 +1,3 @@
-#ifndef JPMODBUS_H
-#define JPMODBUS_H
-
 /*
   Modbus RTU Server Kitchen Sink
 
@@ -21,14 +18,19 @@
   by Sandeep Mistry
 */
 
+#ifndef JPMODBUS_H
+#define JPMODBUS_H
+
 #include <SPI.h>
 #include <Arduino.h>
 #include <ArduinoRS485.h> // ArduinoModbus depends on the ArduinoRS485 library
 #include <ArduinoModbus.h>
+#include <structs.h>
 
 class JpModbus
 {
 private:
+    Prices prices;
     const int _numCoils = 10;
     const int _numDiscreteInputs = 10;
     const int _numHoldingRegisters = 10;
@@ -37,7 +39,9 @@ private:
 public:
     JpModbus();
     void Begin();
-    void Loop();
+    void updateHoldingRegister(Prices prices);
+    void pollDataOnce();
+    void TestToWriteData();
 };
 
 /**
@@ -49,14 +53,14 @@ JpModbus::JpModbus()
 }
 
 /**
- * @brief
+ * @brief Setting up modbus variables and start Server/Slave.
  *
  */
 void JpModbus::Begin()
 {
-    Serial.begin(9600);
-    while (!Serial)
-        delay(1000);
+    // Serial.begin(9600);
+    // while (!Serial)
+    //     delay(1000);
 
     Serial.println("Modbus RTU Server Kitchen Sink");
     delay(1000);
@@ -80,12 +84,42 @@ void JpModbus::Begin()
 
     // configure input registers at address 0x00
     ModbusRTUServer.configureInputRegisters(0x00, this->_numInputRegisters);
-    ModbusRTUServer.holdingRegisterWrite(0x01, 1234);
     Serial.println("Modbus RTU configureInputRegisters ");
+
+    //TestToWriteData();
 }
 
-void JpModbus::Loop()
+/**
+ * @brief Update Holding Register
+ *
+ * @param prices (struct)
+ */
+void JpModbus::updateHoldingRegister(Prices data)
 {
-;
+    int i = 0;
+    for (float price : data.prices)
+    {
+        ModbusRTUServer.holdingRegisterWrite(i, data.prices);
+    }
+}
+
+void JpModbus::pollDataOnce()
+{
+
+    ModbusRTUServer.poll();
+
+}
+
+void JpModbus::TestToWriteData()
+{
+    ModbusRTUServer.holdingRegisterWrite(0x00, float(10.56));
+    ModbusRTUServer.holdingRegisterWrite(0x01, float(20));
+    ModbusRTUServer.holdingRegisterWrite(0x02, float(30));
+    ModbusRTUServer.holdingRegisterWrite(0x03, float(40));
+    ModbusRTUServer.holdingRegisterWrite(0x04, float(50.87));
+    ModbusRTUServer.holdingRegisterWrite(0x05, float(660.929));
+    ModbusRTUServer.holdingRegisterWrite(0x06, float(70));
+    ModbusRTUServer.holdingRegisterWrite(0x07, float(80));
+    ModbusRTUServer.holdingRegisterWrite(0x08, float(90));
 }
 #endif
