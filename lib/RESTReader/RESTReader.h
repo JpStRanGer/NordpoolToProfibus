@@ -35,14 +35,13 @@ public:
     void test();
     bool checkHTTPstatus();
     bool SkipHTTPheaders();
-    void startSerial();
     void printf(char *fmt, ... ); // Creating a printf() wrapper
-    void debug(char *msg);
     void DEBUG_printOneLineFromHTTP();
     void json();
     void printPrizesSerial();
     Prices getPrices();
     void convertPriceUnit();
+    void debug(char *msg);
 
 };
 

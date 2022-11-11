@@ -86,7 +86,7 @@ void JpModbus::Begin()
     ModbusRTUServer.configureInputRegisters(0x00, this->_numInputRegisters);
     Serial.println("Modbus RTU configureInputRegisters ");
 
-    //TestToWriteData();
+    // TestToWriteData();
 }
 
 /**
@@ -96,10 +96,13 @@ void JpModbus::Begin()
  */
 void JpModbus::updateHoldingRegister(Prices data)
 {
+
+    /// @brief loop throw all prices in array and write them to register
+    /// @param data
     int i = 0;
-    for (float price : data.prices)
+    int firstHoureRegister = 4 for (float price : data.prices)
     {
-        ModbusRTUServer.holdingRegisterWrite(i, int(price));
+            ModbusRTUServer.holdingRegisterWrite(i + firstHoureRegister, int(price));
         i++;
     }
 }
@@ -108,7 +111,6 @@ void JpModbus::pollDataOnce()
 {
 
     ModbusRTUServer.poll();
-
 }
 
 void JpModbus::TestToWriteData()
