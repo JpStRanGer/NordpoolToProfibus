@@ -288,24 +288,17 @@ void RESTReader::json()
         const char *prices_item_name = prices_item["name"]; // "00 - 01", "01 - 02", "02 - 03", "03 - 04", ...
         float prices_item_value = prices_item["value"];     // 2053.76, 2036.25, 2030.67, 2031.85, 2042.02, 2176.52, ...
 
-        _prices[i] = prices_item_value;
         this->prices.prices[i] = prices_item_value;
         i++;
     }
     Serial.println("Start META-data...");
     JsonObject meta = doc["meta"];
 
-    this->_min = meta["min"];                     // 1977.85
     this->prices.min = meta["min"];               // 1977.85
-    this->_max = meta["max"];                     // 6533.37
     this->prices.max = meta["max"];               // 6533.37
-    this->_average = meta["average"];             // 2577.98
     this->prices.average = meta["average"];       // 2577.98
-    this->_peak = meta["peak"];                   // 2678.39
     this->prices.peak = meta["peak"];             // 2678.39
-    this->_off_peak_1 = meta["off_peak_1"];       // 2652.87
     this->prices.off_peak_1 = meta["off_peak_1"]; // 2652.87
-    this->_off_peak_2 = meta["off_peak_2"];       // 2126.95
     this->prices.off_peak_2 = meta["off_peak_2"]; // 2126.95
 }
 
@@ -315,7 +308,7 @@ void RESTReader::json()
  */
 void RESTReader::printPrizesSerial()
 {
-    for (float prize : this->_prices)
+    for (float prize : this->prices.prices)
     {
         Serial.print("time of day: ");
         // Serial.print(prize);
@@ -324,17 +317,17 @@ void RESTReader::printPrizesSerial()
     }
 
     Serial.print(", meta_min: ");
-    Serial.println(this->_min);
+    Serial.println(this->prices.min);
     Serial.print(", meta_max: ");
-    Serial.println(this->_max);
+    Serial.println(this->prices.max);
     Serial.print(", meta_average: ");
-    Serial.println(this->_average);
+    Serial.println(this->prices.average);
     Serial.print(", meta_peak: ");
-    Serial.println(this->_peak);
+    Serial.println(this->prices.peak);
     Serial.print(", meta_off_peak_1: ");
-    Serial.println(this->_off_peak_1);
+    Serial.println(this->prices.off_peak_1);
     Serial.print(", meta_off_peak_2: ");
-    Serial.println(this->_off_peak_2);
+    Serial.println(this->prices.off_peak_2);
 }
 
 /**
