@@ -308,20 +308,10 @@ Prices RESTReader::getPrices()
 
 void RESTReader::convertPriceUnit()
 {
-    int arrLength = sizeof(this->prices.prices) / 4;
-    Serial.println("");
-    Serial.println("");
-    Serial.println("#######################");
-    Serial.print("arrLength ");
-    Serial.println(arrLength);
-    Serial.println("#######################");
-    Serial.println("");
-    
+    int arrLength = sizeof(this->prices.prices) / 4;    
     for (int i = 0; i < arrLength; i++)
     {
-        Serial.println(this->prices.prices[i]);
         this->prices.prices[i] = this->prices.prices[i] * 100;
-        Serial.println(prices.prices[i]);
     }
 }
 
