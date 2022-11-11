@@ -295,23 +295,23 @@ void RESTReader::json()
     Serial.println("Start META-data...");
     JsonObject meta = doc["meta"];
 
-    this->_min = meta["min"];               // 1977.85
+    this->_min = meta["min"];                     // 1977.85
     this->prices.min = meta["min"];               // 1977.85
-    this->_max = meta["max"];               // 6533.37
+    this->_max = meta["max"];                     // 6533.37
     this->prices.max = meta["max"];               // 6533.37
-    this->_average = meta["average"];       // 2577.98
+    this->_average = meta["average"];             // 2577.98
     this->prices.average = meta["average"];       // 2577.98
-    this->_peak = meta["peak"];             // 2678.39
+    this->_peak = meta["peak"];                   // 2678.39
     this->prices.peak = meta["peak"];             // 2678.39
-    this->_off_peak_1 = meta["off_peak_1"]; // 2652.87
+    this->_off_peak_1 = meta["off_peak_1"];       // 2652.87
     this->prices.off_peak_1 = meta["off_peak_1"]; // 2652.87
-    this->_off_peak_2 = meta["off_peak_2"]; // 2126.95
+    this->_off_peak_2 = meta["off_peak_2"];       // 2126.95
     this->prices.off_peak_2 = meta["off_peak_2"]; // 2126.95
 }
 
 /**
  * @brief Prints all Class/price values on to serial monitor.
- * 
+ *
  */
 void RESTReader::printPrizesSerial()
 {
@@ -339,10 +339,29 @@ void RESTReader::printPrizesSerial()
 
 /**
  * @brief Get Prices
- * 
- * @return a structure (struct) of prices, containing all the prices. 
+ *
+ * @return a structure (struct) of prices, containing all the prices.
  */
 Prices RESTReader::getPrices()
 {
     return this->prices;
+}
+
+void RESTReader::convertPriceUnit()
+{
+    int arrLength = sizeof(this->prices.prices) / 4;
+    Serial.println("");
+    Serial.println("");
+    Serial.println("#######################");
+    Serial.print("arrLength ");
+    Serial.println(arrLength);
+    Serial.println("#######################");
+    Serial.println("");
+    
+    for (int i = 0; i < arrLength; i++)
+    {
+        Serial.println(this->prices.prices[i]);
+        this->prices.prices[i] = this->prices.prices[i] * 100;
+        Serial.println(prices.prices[i]);
+    }
 }

@@ -99,7 +99,8 @@ void JpModbus::updateHoldingRegister(Prices data)
     int i = 0;
     for (float price : data.prices)
     {
-        ModbusRTUServer.holdingRegisterWrite(i, data.prices);
+        ModbusRTUServer.holdingRegisterWrite(i, int(price));
+        i++;
     }
 }
 
