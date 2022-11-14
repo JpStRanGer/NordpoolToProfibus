@@ -20,17 +20,12 @@ Debugger debugger;
 JpModbus modbus;
 Prices prices;
 
+bool getNewData = true;
+const unsigned long eventInterval = 10000;
+unsigned long previousTime = 0;
+
 void getData()
 {
-}
-
-void sendData()
-{
-}
-
-void setup()
-{
-    debugger.startSerial();
 
     RESTReader restReader;
     restReader.test();
@@ -40,20 +35,44 @@ void setup()
     restReader.printPrizesSerial();
     restReader.convertPriceUnit(1);
     restReader.printPrizesSerial();
-
     prices = restReader.getPrices();
     restReader.~RESTReader();
+}
 
+void sendData()
+{
+    modbus.updateHoldingRegister(prices);
+    modbus.pollDataOnce();
+}
+
+void setup()
+{
+
+    debugger.startSerial();
     modbus.Begin();
 }
 
 void loop()
 {
 
-    // delay(1000);
-    modbus.updateHoldingRegister(prices);
-    modbus.pollDataOnce();
-    // restReader.DEBUG_printOneLineFromHTTP();
-    // //  Serial.print("\n");delay(1000);
-    // delay(1000);
+    if (getNewData)
+    {
+        getData();
+        getNewData = false;
+    }
+
+    /* Updates frequently */
+    unsigned long currentTime = millis();
+
+    /* This is the event */
+    if (currentTime - previousTime >= eventInterval)
+    {
+        /* Event code */
+        sendData();
+
+        /* Update the timing for the next time around */
+        previousTime = currentTime;
+    }
+
+    
 }
