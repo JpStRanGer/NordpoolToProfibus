@@ -306,13 +306,19 @@ Prices RESTReader::getPrices()
     return this->prices;
 }
 
-void RESTReader::convertPriceUnit()
+void RESTReader::convertPriceUnit(float unit)
 {
     int arrLength = sizeof(this->prices.prices) / 4;    
     for (int i = 0; i < arrLength; i++)
     {
-        this->prices.prices[i] = this->prices.prices[i] * 100;
+        this->prices.prices[i] = this->prices.prices[i] * unit;
     }
+    this->prices.min *= unit;
+    this->prices.max *= unit;
+    this->prices.average *= unit;
+    this->prices.peak *= unit;
+    this->prices.off_peak_1 *= unit;
+    this->prices.off_peak_2 *= unit;
 }
 
 /**

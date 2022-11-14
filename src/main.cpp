@@ -38,7 +38,7 @@ void setup()
     restReader.SkipHTTPheaders();
     restReader.json();
     restReader.printPrizesSerial();
-    restReader.convertPriceUnit();
+    restReader.convertPriceUnit(1);
     restReader.printPrizesSerial();
 
     prices = restReader.getPrices();

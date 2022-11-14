@@ -40,7 +40,7 @@ public:
     void json();
     void printPrizesSerial();
     Prices getPrices();
-    void convertPriceUnit();
+    void convertPriceUnit(float unit);
     void debug(char *msg);
 
 };
