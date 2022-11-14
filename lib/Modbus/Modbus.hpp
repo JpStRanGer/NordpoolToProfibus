@@ -30,11 +30,12 @@
 class JpModbus
 {
 private:
+    bool shouldDebug;
     Prices prices;
-    const int _numCoils = 10;
-    const int _numDiscreteInputs = 10;
-    const int _numHoldingRegisters = 10;
-    const int _numInputRegisters = 10;
+    // const int _numCoils = 10;
+    // const int _numDiscreteInputs = 10;
+    const int _numHoldingRegisters = 40;
+    // const int _numInputRegisters = 10;
 
 public:
     JpModbus();
@@ -42,6 +43,7 @@ public:
     void updateHoldingRegister(Prices prices);
     void pollDataOnce();
     void TestToWriteData();
+    void debug(char *msg);
 };
 
 /**
@@ -58,10 +60,6 @@ JpModbus::JpModbus()
  */
 void JpModbus::Begin()
 {
-    // Serial.begin(9600);
-    // while (!Serial)
-    //     delay(1000);
-
     Serial.println("Modbus RTU Server Kitchen Sink");
     delay(1000);
 
@@ -73,20 +71,18 @@ void JpModbus::Begin()
             ;
     }
 
-    // configure coils at address 0x00
-    ModbusRTUServer.configureCoils(0x00, this->_numCoils);
+    // // configure coils at address 0x00
+    // ModbusRTUServer.configureCoils(0x00, this->_numCoils);
 
-    // configure discrete inputs at address 0x00
-    ModbusRTUServer.configureDiscreteInputs(0x00, this->_numDiscreteInputs);
+    // // configure discrete inputs at address 0x00
+    // ModbusRTUServer.configureDiscreteInputs(0x00, this->_numDiscreteInputs);
 
     // configure holding registers at address 0x00
     ModbusRTUServer.configureHoldingRegisters(0x00, this->_numHoldingRegisters);
 
-    // configure input registers at address 0x00
-    ModbusRTUServer.configureInputRegisters(0x00, this->_numInputRegisters);
-    Serial.println("Modbus RTU configureInputRegisters ");
-
-    //TestToWriteData();
+    // // configure input registers at address 0x00
+    // ModbusRTUServer.configureInputRegisters(0x00, this->_numInputRegisters);
+    // Serial.println("Modbus RTU configureInputRegisters ");
 }
 
 /**
@@ -96,10 +92,22 @@ void JpModbus::Begin()
  */
 void JpModbus::updateHoldingRegister(Prices data)
 {
+    /// @brief write META-data to holdingRegisterWrite
+    /// @param data is of type Prices struct
+    ModbusRTUServer.holdingRegisterWrite(0x00, int(data.min));
+    ModbusRTUServer.holdingRegisterWrite(0x01, int(data.max));
+    ModbusRTUServer.holdingRegisterWrite(0x02, int(data.average));
+    ModbusRTUServer.holdingRegisterWrite(0x03, int(data.peak));
+    ModbusRTUServer.holdingRegisterWrite(0x04, int(data.off_peak_1));
+    ModbusRTUServer.holdingRegisterWrite(0x05, int(data.off_peak_2));
+
+    /// @brief loop throw all prices in array and write them to register
+    /// @param data
     int i = 0;
+    int firstHoureRegister = 6;
     for (float price : data.prices)
     {
-        ModbusRTUServer.holdingRegisterWrite(i, int(price));
+        ModbusRTUServer.holdingRegisterWrite(i + firstHoureRegister, int(price));
         i++;
     }
 }
@@ -108,7 +116,6 @@ void JpModbus::pollDataOnce()
 {
 
     ModbusRTUServer.poll();
-
 }
 
 void JpModbus::TestToWriteData()
@@ -122,5 +129,24 @@ void JpModbus::TestToWriteData()
     ModbusRTUServer.holdingRegisterWrite(0x06, float(70));
     ModbusRTUServer.holdingRegisterWrite(0x07, float(80));
     ModbusRTUServer.holdingRegisterWrite(0x08, float(90));
+}
+
+/**
+ * @brief Debug method for enabling internal serial printing.
+ * NEEDS serialBegin to be activatet outside this class!
+ *
+ * @param msg
+ */
+void JpModbus::debug(char *msg)
+{
+    if (!this->shouldDebug)
+        return;
+
+    char buff[180];
+    sprintf(buff, "DEBUG:\t%s\n", msg);
+    Serial.print(buff);
+
+    // Serial.print("DEBUG: ");
+    // Serial.println(msg);
 }
 #endif

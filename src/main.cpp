@@ -20,6 +20,14 @@ Debugger debugger;
 JpModbus modbus;
 Prices prices;
 
+void getData()
+{
+}
+
+void sendData()
+{
+}
+
 void setup()
 {
     debugger.startSerial();
@@ -30,34 +38,20 @@ void setup()
     restReader.SkipHTTPheaders();
     restReader.json();
     restReader.printPrizesSerial();
-    restReader.convertPriceUnit();
+    restReader.convertPriceUnit(1);
     restReader.printPrizesSerial();
-    
+
     prices = restReader.getPrices();
     restReader.~RESTReader();
 
     modbus.Begin();
-    modbus.updateHoldingRegister(prices);
-
-    // Prices prices = restReader.getPrices();
-    // for (float price : prices.prices)
-    // {
-    //     Serial.println(price);
-    // }
-    // Serial.println(prices.average);
-    // Serial.println(prices.max);
-    // Serial.println(prices.min);
-    // Serial.println(prices.off_peak_1);
-    // Serial.println(prices.off_peak_2);
-    // Serial.println(prices.off_peak_2);
-    // Serial.println(prices.peak);
-
 }
 
 void loop()
 {
+
     // delay(1000);
-    // modbus.updateHoldingRegister(prices);
+    modbus.updateHoldingRegister(prices);
     modbus.pollDataOnce();
     // restReader.DEBUG_printOneLineFromHTTP();
     // //  Serial.print("\n");delay(1000);

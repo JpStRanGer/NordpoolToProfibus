@@ -21,13 +21,6 @@ class RESTReader
 {
 private:
     /// PRIVATE PROPERTIES/METHODS
-    float _prices[24];
-    float _min;
-    float _max;
-    float _average;
-    float _peak;
-    float _off_peak_1;
-    float _off_peak_2;
 
 public:
     /// PUBLIC PROPERTIES
@@ -42,14 +35,13 @@ public:
     void test();
     bool checkHTTPstatus();
     bool SkipHTTPheaders();
-    void startSerial();
     void printf(char *fmt, ... ); // Creating a printf() wrapper
-    void debug(char *msg);
     void DEBUG_printOneLineFromHTTP();
     void json();
     void printPrizesSerial();
     Prices getPrices();
-    void convertPriceUnit();
+    void convertPriceUnit(float unit);
+    void debug(char *msg);
 
 };
 
