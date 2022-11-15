@@ -26,13 +26,8 @@ unsigned long previousTime = 0;
 
 void getData()
 {
-    RESTReader restReader;
+    prices = RESTReader::fetchPrices();
 
-    restReader.fetchData();
-
-    prices = restReader.getPrices();
-    
-    restReader.~RESTReader();
 }
 
 void sendData()

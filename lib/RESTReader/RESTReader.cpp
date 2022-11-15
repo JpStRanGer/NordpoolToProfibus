@@ -353,3 +353,23 @@ void RESTReader::fetchData()
     this->convertPriceUnit(1);
     this->printPrizesSerial();
 }
+
+/**
+ * @brief 
+ * 
+ * @return Prices 
+ */
+static Prices RESTReader::fetchPrices()
+{
+    Prices prices;
+
+    RESTReader restReader;
+
+    restReader.fetchData();
+
+    prices = restReader.getPrices();
+
+    restReader.~RESTReader();
+
+    return prices;
+}

@@ -43,6 +43,8 @@ public:
     void convertPriceUnit(float unit);
     void debug(char *msg);
     void fetchData();
+    static Prices fetchPrices();
+    
 };
 
 #endif
