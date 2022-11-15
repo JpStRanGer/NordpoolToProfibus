@@ -34,14 +34,14 @@ RESTReader::~RESTReader()
  * @brief Method for testing vital functions
  *
  */
-void RESTReader::test()
+void RESTReader::connect()
 {
     debug("running test() from RESTReader...");
 
     // this->server  = "nordpoolveas.jonaspettersen.no";
     sprintf(server, "nordpoolveas.jonaspettersen.no"); // Write con.string to array
 
-    Serial.println("call function: startEthernet()");
+    debug("call function: startEthernet()");
     // Enter a MAC address for your controller below.
     // Newer Ethernet shields have a MAC address printed on a sticker on the shield
     byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
@@ -51,7 +51,7 @@ void RESTReader::test()
     IPAddress myDns(192, 168, 0, 1);
 
     // start the Ethernet connection:
-    Serial.println("Initialize Ethernet with DHCP:");
+    debug("Initialize Ethernet with DHCP:");
     if (Ethernet.begin(mac) == 0)
     {
         Serial.println("Failed to configure Ethernet using DHCP");
@@ -157,13 +157,12 @@ bool RESTReader::SkipHTTPheaders()
     return true;
 }
 
-
 /**
  * @brief Creating a printf() wrapper
  * @ref https://playground.arduino.cc/Main/Printf/
  *
  * @param fmt is input STRING ex. printf("this is a %s","text") prints: this is a text
- * @param ...
+ * @param ... is as many following arguments as needed in the formated string fmt
  */
 void RESTReader::printf(char *fmt, ...)
 {
@@ -282,17 +281,17 @@ void RESTReader::printPrizesSerial()
         Serial.println(prize);
     }
 
-    Serial.print(", meta_min: ");
+    Serial.print("meta_min: ");
     Serial.println(this->prices.min);
-    Serial.print(", meta_max: ");
+    Serial.print("meta_max: ");
     Serial.println(this->prices.max);
-    Serial.print(", meta_average: ");
+    Serial.print("meta_average: ");
     Serial.println(this->prices.average);
-    Serial.print(", meta_peak: ");
+    Serial.print("meta_peak: ");
     Serial.println(this->prices.peak);
-    Serial.print(", meta_off_peak_1: ");
+    Serial.print("meta_off_peak_1: ");
     Serial.println(this->prices.off_peak_1);
-    Serial.print(", meta_off_peak_2: ");
+    Serial.print("meta_off_peak_2: ");
     Serial.println(this->prices.off_peak_2);
 }
 
@@ -308,7 +307,7 @@ Prices RESTReader::getPrices()
 
 void RESTReader::convertPriceUnit(float unit)
 {
-    int arrLength = sizeof(this->prices.prices) / 4;    
+    int arrLength = sizeof(this->prices.prices) / 4;
     for (int i = 0; i < arrLength; i++)
     {
         this->prices.prices[i] = this->prices.prices[i] * unit;
@@ -324,8 +323,8 @@ void RESTReader::convertPriceUnit(float unit)
 /**
  * @brief Debug method for enabling internal serial printing.
  * NEEDS serialBegin to be activatet outside this class!
- * 
- * @param msg 
+ *
+ * @param msg
  */
 void RESTReader::debug(char *msg)
 {
@@ -338,4 +337,19 @@ void RESTReader::debug(char *msg)
 
     // Serial.print("DEBUG: ");
     // Serial.println(msg);
+}
+
+/**
+ * @brief Fetching data from Nordpool API
+ *
+ */
+void RESTReader::fetchData()
+{
+    this->connect();
+    this->checkHTTPstatus();
+    this->SkipHTTPheaders();
+    this->json();
+    this->printPrizesSerial();
+    this->convertPriceUnit(1);
+    this->printPrizesSerial();
 }

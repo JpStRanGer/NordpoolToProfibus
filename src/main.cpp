@@ -21,21 +21,17 @@ JpModbus modbus;
 Prices prices;
 
 bool getNewData = true;
-const unsigned long eventInterval = 10000;
+const unsigned long eventInterval = 60000;
 unsigned long previousTime = 0;
 
 void getData()
 {
-
     RESTReader restReader;
-    restReader.test();
-    restReader.checkHTTPstatus();
-    restReader.SkipHTTPheaders();
-    restReader.json();
-    restReader.printPrizesSerial();
-    restReader.convertPriceUnit(1);
-    restReader.printPrizesSerial();
+
+    restReader.fetchData();
+
     prices = restReader.getPrices();
+    
     restReader.~RESTReader();
 }
 
@@ -54,6 +50,17 @@ void setup()
 
 void loop()
 {
+    /* Updates frequently to check for new time*/
+    unsigned long currentTime = millis();
+
+    /* Check if time differace is grater than eventinterval */
+    if (currentTime - previousTime >= eventInterval)
+    {
+        /* Tell code to get new data */
+        getNewData = true;
+        /* Update the timing for the next time around */
+        previousTime = currentTime;
+    }
 
     if (getNewData)
     {
@@ -61,18 +68,5 @@ void loop()
         getNewData = false;
     }
 
-    /* Updates frequently */
-    unsigned long currentTime = millis();
-
-    /* This is the event */
-    if (currentTime - previousTime >= eventInterval)
-    {
-        /* Event code */
-        sendData();
-
-        /* Update the timing for the next time around */
-        previousTime = currentTime;
-    }
-
-    
+    sendData();
 }

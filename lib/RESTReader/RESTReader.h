@@ -32,7 +32,7 @@ public:
     /// PUBLIC METHODS
     RESTReader(); /// @brief Construct a new RESTReader object
     ~RESTReader(); /// @brief Destroy the RESTReader object
-    void test();
+    void connect();
     bool checkHTTPstatus();
     bool SkipHTTPheaders();
     void printf(char *fmt, ... ); // Creating a printf() wrapper
@@ -42,7 +42,7 @@ public:
     Prices getPrices();
     void convertPriceUnit(float unit);
     void debug(char *msg);
-
+    void fetchData();
 };
 
 #endif
