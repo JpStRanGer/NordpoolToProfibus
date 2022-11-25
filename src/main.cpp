@@ -19,8 +19,7 @@
 Debugger debugger;
 JpModbus modbus;
 
-bool getNewData = true;
-const unsigned long eventInterval = 60000;
+const unsigned long eventInterval = 1000;
 unsigned long previousTime = 0;
 
 void setup()
@@ -42,6 +41,6 @@ void loop()
         modbus.updateHoldingRegister(RESTReader::fetchPrices());
         previousTime = currentTime;
     }
-    
+
     modbus.pollDataOnce();
 }

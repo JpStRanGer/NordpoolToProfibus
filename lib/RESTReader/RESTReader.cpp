@@ -350,8 +350,8 @@ void RESTReader::fetchData()
     this->SkipHTTPheaders();
     this->json();
     this->printPrizesSerial();
-    this->convertPriceUnit(1);
-    this->printPrizesSerial();
+    // this->convertPriceUnit(1);
+    // this->printPrizesSerial();
 }
 
 /**
