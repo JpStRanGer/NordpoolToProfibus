@@ -16,6 +16,7 @@
 //#include <SPI.h>
 #include <Ethernet.h>
 #include <structs.h>
+#include <HttpClient.h>
 
 class NordPool
 {
@@ -32,7 +33,7 @@ public:
     /// PUBLIC METHODS
     NordPool(); /// @brief Construct a new NordPool object
     ~NordPool(); /// @brief Destroy the NordPool object
-    void connect();
+    // void connect();
     bool checkHTTPstatus();
     bool SkipHTTPheaders();
     void printf(char *fmt, ... ); // Creating a printf() wrapper

@@ -31,133 +31,6 @@ NordPool::~NordPool()
 }
 
 /**
- * @brief Method for testing vital functions
- *
- */
-void NordPool::connect()
-{
-    debug("running test() from NordPool...");
-
-    // this->server  = "nordpoolveas.jonaspettersen.no";
-    sprintf(server, "nordpoolveas.jonaspettersen.no"); // Write con.string to array
-
-    debug("call function: startEthernet()");
-    // Enter a MAC address for your controller below.
-    // Newer Ethernet shields have a MAC address printed on a sticker on the shield
-    byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
-
-    // Set the static IP address to use if the DHCP fails to assign
-    IPAddress ip(192, 168, 100, 105);
-    IPAddress myDns(192, 168, 0, 1);
-
-    // start the Ethernet connection:
-    debug("Initialize Ethernet with DHCP:");
-    if (Ethernet.begin(mac) == 0)
-    {
-        Serial.println("Failed to configure Ethernet using DHCP");
-        // Check for Ethernet hardware present
-        if (Ethernet.hardwareStatus() == EthernetNoHardware)
-        {
-            Serial.println("Ethernet shield was not found.  Sorry, can't run without hardware. :(");
-            while (true)
-            {
-                delay(1); // do nothing, no point running without Ethernet hardware
-            }
-        }
-        if (Ethernet.linkStatus() == LinkOFF)
-        {
-            Serial.println("Ethernet cable is not connected.");
-        }
-        // try to congifure using IP address instead of DHCP:
-        Ethernet.begin(mac, ip, myDns);
-    }
-    else
-    {
-        Serial.print("  DHCP assigned IP ");
-        Serial.println(Ethernet.localIP());
-    }
-    // give the Ethernet shield a second to initialize:
-    delay(1000);
-    Serial.print("connecting to ");
-    Serial.print(server);
-    Serial.println("...");
-
-    // if you get a connection, report back via serial:
-    if (client.connect(server, 80))
-    {
-        Serial.print("connected to ");
-        Serial.println(client.remoteIP());
-        // Make a HTTP request:
-        client.println("GET /api/nordpool/hourly HTTP/1.0");
-        // client.println("GET /api/nordpool/daily HTTP/1.1");
-        client.println("Host: nordpoolveas.jonaspettersen.no");
-        // client.println("Connection: close");
-        client.println();
-    }
-    else
-    {
-        // if you didn't get a connection to the server:
-        Serial.println("connection failed");
-    }
-}
-
-/**
- * @brief Check HTTP status
- *
- * @return true if status is okey
- * @return false if status is bad
- */
-bool NordPool::checkHTTPstatus()
-{
-    // resurving an prices buffer for the incomming prices
-    char status[32] = {0};
-    // read prices from pricesstream (HTTP)
-    client.readBytesUntil(0x0D, status, sizeof(status));
-    // check if prices contain the wanted information.
-
-    if (strcmp(status, "HTTP/1.1 200 OK") != 0)
-    {
-        Serial.println(F("Unexpected response: "));
-        for (int i = 0; i < sizeof(status); i++)
-        {
-            Serial.print(status[i], HEX);
-            Serial.print(" ");
-        }
-        return false;
-    }
-
-    this->debug("HTTP status OK!\n");
-    return true;
-}
-
-/**
- * @brief Skip HTTP headers
- *
- * @return true if HTTP headers skipped OK
- * @return false if Invalid response
- */
-bool NordPool::SkipHTTPheaders()
-{
-    Serial.println("call function: SkipHTTPheaders()");
-
-    char endOfHeaders[] = "\r\n\r\n";
-    if (!client.find(endOfHeaders))
-    {
-        Serial.println(F("Invalid response"));
-        return false;
-    }
-
-    while (client.available() && client.peek() != '{')
-    {
-        char c = 0;
-        client.readBytes(&c, 1);
-        Serial.print("BAD CARACTER: ");
-        Serial.println(c);
-    }
-    return true;
-}
-
-/**
  * @brief Creating a printf() wrapper
  * @ref https://playground.arduino.cc/Main/Printf/
  *
@@ -228,24 +101,16 @@ void NordPool::DEBUG_printOneLineFromHTTP()
  * @brief Converting Json prices to arduino C types.
  *
  */
-void NordPool::json()
+Prices NordPool::getPrices()
 {
-    Serial.println("Start Json...");
-    Stream &input = client;
-
-    StaticJsonDocument<1024> doc;
-    // DynamicJsonDocument doc(1024);
-
-    DeserializationError error = deserializeJson(doc, input);
-
-    if (error)
+    if (this->prices)
     {
-        Serial.print(F("deserializeJson() failed: "));
-        Serial.println(error.f_str());
-        Serial.print("doc.capacity: ");
-        Serial.println(doc.capacity());
-        return;
+        return this->prices;
     }
+    // HttpClient httpClient = HttpClient::get("https://nordpoolveas.jonaspettersen.no/api/nordpool/hourly");
+    // StaticJsonDocument<1024> doc = httpClient.getJsonDocument();
+    StaticJsonDocument<1024> doc = HttpClient::get("https://nordpoolveas.jonaspettersen.no/api/nordpool/hourly").getJsonDocument();
+
     int i = 0;
     this->debug("Start FOR-loop...");
     for (JsonObject prices_item : doc["data"].as<JsonArray>())
@@ -265,6 +130,8 @@ void NordPool::json()
     this->prices.peak = meta["peak"];             // 2678.39
     this->prices.off_peak_1 = meta["off_peak_1"]; // 2652.87
     this->prices.off_peak_2 = meta["off_peak_2"]; // 2126.95
+
+    return this->prices;
 }
 
 /**
@@ -295,15 +162,6 @@ void NordPool::printPrizesSerial()
     Serial.println(this->prices.off_peak_2);
 }
 
-/**
- * @brief Get Prices
- *
- * @return a structure (struct) of prices, containing all the prices.
- */
-Prices NordPool::getPrices()
-{
-    return this->prices;
-}
 
 void NordPool::convertPriceUnit(float unit)
 {
@@ -340,24 +198,9 @@ void NordPool::debug(char *msg)
 }
 
 /**
- * @brief Fetching data from Nordpool API
+ * @brief
  *
- */
-void NordPool::fetchData()
-{
-    this->connect();
-    this->checkHTTPstatus();
-    this->SkipHTTPheaders();
-    this->json();
-    this->printPrizesSerial();
-    // this->convertPriceUnit(1);
-    // this->printPrizesSerial();
-}
-
-/**
- * @brief 
- * 
- * @return Prices 
+ * @return Prices
  */
 static Prices NordPool::fetchPrices()
 {
@@ -365,9 +208,9 @@ static Prices NordPool::fetchPrices()
 
     NordPool nordPool;
 
-    nordPool.fetchData();
-
     prices = nordPool.getPrices();
+
+    nordPool.printPrizesSerial();
 
     nordPool.~NordPool();
 
