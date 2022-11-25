@@ -12,7 +12,7 @@
 #include <Arduino.h>
 #include <Debugger.hpp>
 #include <Modbus.hpp>
-#include <RESTReader.h>
+#include <NordPool.h>
 #include <structs.h>
 
 /// @brief
@@ -38,7 +38,7 @@ void loop()
     /* Check if time differace is grater than eventinterval */
     if (timeDiff >= eventInterval)
     {
-        modbus.updateHoldingRegister(RESTReader::fetchPrices());
+        modbus.updateHoldingRegister(NordPool::fetchPrices());
         previousTime = currentTime;
     }
 

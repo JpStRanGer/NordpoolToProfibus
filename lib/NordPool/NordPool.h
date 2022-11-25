@@ -1,5 +1,5 @@
 /**
- * @file RESTReader.h
+ * @file NordPool.h
  * @author  Jonas Pettersen (Jonas.st.pettersen@gmail.com)
  * @brief
  * @version 0.1
@@ -8,8 +8,8 @@
  * @copyright Copyright (c) 2022
  *
  */
-#ifndef RESTReader_h
-#define RESTReader_h
+#ifndef nordpool_h
+#define nordpool_h
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
@@ -17,7 +17,7 @@
 #include <Ethernet.h>
 #include <structs.h>
 
-class RESTReader
+class NordPool
 {
 private:
     /// PRIVATE PROPERTIES/METHODS
@@ -30,8 +30,8 @@ public:
     char server[]; // name address for Google (using DNS)
 
     /// PUBLIC METHODS
-    RESTReader(); /// @brief Construct a new RESTReader object
-    ~RESTReader(); /// @brief Destroy the RESTReader object
+    NordPool(); /// @brief Construct a new NordPool object
+    ~NordPool(); /// @brief Destroy the NordPool object
     void connect();
     bool checkHTTPstatus();
     bool SkipHTTPheaders();

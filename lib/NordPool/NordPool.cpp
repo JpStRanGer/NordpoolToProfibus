@@ -1,5 +1,5 @@
 /**
- * @file RESTReader.cpp
+ * @file NordPool.cpp
  * @author Jonas Pettersen (Jonas.st.pettersen@gmail.com)
  * @brief
  * @version 0.1
@@ -9,13 +9,13 @@
  *
  */
 
-#include "RESTReader.h"
+#include "NordPool.h"
 
 /**
- * @brief Construct a new RESTReader object
+ * @brief Construct a new NordPool object
  *
  */
-RESTReader::RESTReader()
+NordPool::NordPool()
 {
     // this->startSerial();
     // this->test();
@@ -23,10 +23,10 @@ RESTReader::RESTReader()
 }
 
 /**
- * @brief Destroy the RESTReader::RESTReader object
+ * @brief Destroy the NordPool::NordPool object
  *
  */
-RESTReader::~RESTReader()
+NordPool::~NordPool()
 {
 }
 
@@ -34,9 +34,9 @@ RESTReader::~RESTReader()
  * @brief Method for testing vital functions
  *
  */
-void RESTReader::connect()
+void NordPool::connect()
 {
-    debug("running test() from RESTReader...");
+    debug("running test() from NordPool...");
 
     // this->server  = "nordpoolveas.jonaspettersen.no";
     sprintf(server, "nordpoolveas.jonaspettersen.no"); // Write con.string to array
@@ -107,7 +107,7 @@ void RESTReader::connect()
  * @return true if status is okey
  * @return false if status is bad
  */
-bool RESTReader::checkHTTPstatus()
+bool NordPool::checkHTTPstatus()
 {
     // resurving an prices buffer for the incomming prices
     char status[32] = {0};
@@ -136,7 +136,7 @@ bool RESTReader::checkHTTPstatus()
  * @return true if HTTP headers skipped OK
  * @return false if Invalid response
  */
-bool RESTReader::SkipHTTPheaders()
+bool NordPool::SkipHTTPheaders()
 {
     Serial.println("call function: SkipHTTPheaders()");
 
@@ -164,7 +164,7 @@ bool RESTReader::SkipHTTPheaders()
  * @param fmt is input STRING ex. printf("this is a %s","text") prints: this is a text
  * @param ... is as many following arguments as needed in the formated string fmt
  */
-void RESTReader::printf(char *fmt, ...)
+void NordPool::printf(char *fmt, ...)
 {
     char buf[128]; // resulting string limited to 128 chars
     va_list args;
@@ -179,7 +179,7 @@ void RESTReader::printf(char *fmt, ...)
  * print one Line of the inncomming prices i client
  *
  */
-void RESTReader::DEBUG_printOneLineFromHTTP()
+void NordPool::DEBUG_printOneLineFromHTTP()
 {
 
     // Check HTTP status
@@ -228,7 +228,7 @@ void RESTReader::DEBUG_printOneLineFromHTTP()
  * @brief Converting Json prices to arduino C types.
  *
  */
-void RESTReader::json()
+void NordPool::json()
 {
     Serial.println("Start Json...");
     Stream &input = client;
@@ -271,7 +271,7 @@ void RESTReader::json()
  * @brief Prints all Class/price values on to serial monitor.
  *
  */
-void RESTReader::printPrizesSerial()
+void NordPool::printPrizesSerial()
 {
     for (float prize : this->prices.prices)
     {
@@ -300,12 +300,12 @@ void RESTReader::printPrizesSerial()
  *
  * @return a structure (struct) of prices, containing all the prices.
  */
-Prices RESTReader::getPrices()
+Prices NordPool::getPrices()
 {
     return this->prices;
 }
 
-void RESTReader::convertPriceUnit(float unit)
+void NordPool::convertPriceUnit(float unit)
 {
     int arrLength = sizeof(this->prices.prices) / 4;
     for (int i = 0; i < arrLength; i++)
@@ -326,7 +326,7 @@ void RESTReader::convertPriceUnit(float unit)
  *
  * @param msg
  */
-void RESTReader::debug(char *msg)
+void NordPool::debug(char *msg)
 {
     if (!this->shouldDebug)
         return;
@@ -343,7 +343,7 @@ void RESTReader::debug(char *msg)
  * @brief Fetching data from Nordpool API
  *
  */
-void RESTReader::fetchData()
+void NordPool::fetchData()
 {
     this->connect();
     this->checkHTTPstatus();
@@ -359,17 +359,17 @@ void RESTReader::fetchData()
  * 
  * @return Prices 
  */
-static Prices RESTReader::fetchPrices()
+static Prices NordPool::fetchPrices()
 {
     Prices prices;
 
-    RESTReader restReader;
+    NordPool nordPool;
 
-    restReader.fetchData();
+    nordPool.fetchData();
 
-    prices = restReader.getPrices();
+    prices = nordPool.getPrices();
 
-    restReader.~RESTReader();
+    nordPool.~NordPool();
 
     return prices;
 }
