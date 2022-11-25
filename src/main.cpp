@@ -18,23 +18,12 @@
 /// @brief
 Debugger debugger;
 JpModbus modbus;
-Prices prices;
 
 bool getNewData = true;
 const unsigned long eventInterval = 60000;
 unsigned long previousTime = 0;
 
-void getData()
-{
-    prices = RESTReader::fetchPrices();
 
-}
-
-void sendData()
-{
-    modbus.updateHoldingRegister(RESTReader::fetchPrices());
-    modbus.pollDataOnce();
-}
 
 void setup()
 {
@@ -59,9 +48,9 @@ void loop()
 
     if (getNewData)
     {
-        getData();
         getNewData = false;
     }
 
-    sendData();
+    modbus.updateHoldingRegister(RESTReader::fetchPrices());
+    modbus.pollDataOnce();
 }
