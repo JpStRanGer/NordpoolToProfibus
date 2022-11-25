@@ -32,7 +32,7 @@ void getData()
 
 void sendData()
 {
-    modbus.updateHoldingRegister(prices);
+    modbus.updateHoldingRegister(RESTReader::fetchPrices());
     modbus.pollDataOnce();
 }
 
