@@ -23,8 +23,6 @@ bool getNewData = true;
 const unsigned long eventInterval = 60000;
 unsigned long previousTime = 0;
 
-
-
 void setup()
 {
 
@@ -36,21 +34,14 @@ void loop()
 {
     /* Updates frequently to check for new time*/
     unsigned long currentTime = millis();
+    float timeDiff = currentTime - previousTime;
 
     /* Check if time differace is grater than eventinterval */
-    if (currentTime - previousTime >= eventInterval)
+    if (timeDiff >= eventInterval)
     {
-        /* Tell code to get new data */
-        getNewData = true;
-        /* Update the timing for the next time around */
+        modbus.updateHoldingRegister(RESTReader::fetchPrices());
         previousTime = currentTime;
     }
-
-    if (getNewData)
-    {
-        getNewData = false;
-    }
-
-    modbus.updateHoldingRegister(RESTReader::fetchPrices());
+    
     modbus.pollDataOnce();
 }
