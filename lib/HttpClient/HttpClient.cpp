@@ -218,3 +218,21 @@ StaticJsonDocument<1024> HttpClient::getJsonDocument()
 {
     return this->data;
 }
+
+/**
+ * @brief 
+ * 
+ * @param msg 
+ */
+void HttpClient::debug(char *msg)
+{
+    if (!this->shouldDebug)
+        return;
+
+    char buff[180];
+    sprintf(buff, "DEBUG:\t%s\n", msg);
+    Serial.print(buff);
+
+    // Serial.print("DEBUG: ");
+    // Serial.println(msg);
+}

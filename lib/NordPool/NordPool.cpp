@@ -103,10 +103,10 @@ void NordPool::DEBUG_printOneLineFromHTTP()
  */
 Prices NordPool::getPrices()
 {
-    if (this->prices)
-    {
-        return this->prices;
-    }
+    // if (this->prices)
+    // {
+    //     return this->prices;
+    // }
     // HttpClient httpClient = HttpClient::get("https://nordpoolveas.jonaspettersen.no/api/nordpool/hourly");
     // StaticJsonDocument<1024> doc = httpClient.getJsonDocument();
     StaticJsonDocument<1024> doc = HttpClient::get("https://nordpoolveas.jonaspettersen.no/api/nordpool/hourly").getJsonDocument();

@@ -20,10 +20,14 @@
 class HttpClient
 {
 private:
-    char url[];
-    char method[];
+    StaticJsonDocument<1024> data;
+    String url;
+    String method;
 
 public:
+    bool shouldDebug = true;
+
+
     EthernetClient client;
     HttpClient();
     HttpClient(String url, String method);
@@ -31,6 +35,7 @@ public:
     void connect();
     static HttpClient get(String url);
     StaticJsonDocument<1024> getJsonDocument();
-}
+    void debug(char *msg);
+};
 
 #endif
