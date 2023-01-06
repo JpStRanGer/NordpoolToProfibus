@@ -15,28 +15,8 @@
  * @brief Construct a new RESTReader object
  *
  */
-RESTReader::RESTReader()
+RESTReader::RESTReader(Prices *p) : prices(p)
 {
-    // this->startSerial();
-    // this->test();
-    // this->checkHTTPstatus();
-}
-
-/**
- * @brief Destroy the RESTReader::RESTReader object
- *
- */
-RESTReader::~RESTReader()
-{
-}
-
-/**
- * @brief Method for testing vital functions
- *
- */
-void RESTReader::test()
-{
-    debug("running test() from RESTReader...");
 
     // this->server  = "nordpoolveas.jonaspettersen.no";
     sprintf(server, "nordpoolveas.jonaspettersen.no"); // Write con.string to array
@@ -76,6 +56,24 @@ void RESTReader::test()
         Serial.print("  DHCP assigned IP ");
         Serial.println(Ethernet.localIP());
     }
+}
+
+/**
+ * @brief Destroy the RESTReader::RESTReader object
+ *
+ */
+RESTReader::~RESTReader()
+{
+}
+
+/**
+ * @brief Method for testing vital functions
+ *
+ */
+void RESTReader::test()
+{
+    debug("running test() from RESTReader...");
+
     // give the Ethernet shield a second to initialize:
     delay(1000);
     Serial.print("connecting to ");
@@ -157,7 +155,6 @@ bool RESTReader::SkipHTTPheaders()
     return true;
 }
 
-
 /**
  * @brief Creating a printf() wrapper
  * @ref https://playground.arduino.cc/Main/Printf/
@@ -185,9 +182,9 @@ void RESTReader::DEBUG_printOneLineFromHTTP()
 
     // Check HTTP status
     char status[250] = {0};
-    client.readBytesUntil('\r\n', status, sizeof(status));
+    client.readBytesUntil('\r', status, sizeof(status));
     // Serial.print(F("Serial response: "));
-    for (int i = 0; i < sizeof(status); i++)
+    for (unsigned int i = 0; i < sizeof(status); i++)
     {
         switch (status[i])
         {
@@ -254,18 +251,21 @@ void RESTReader::json()
         const char *prices_item_name = prices_item["name"]; // "00 - 01", "01 - 02", "02 - 03", "03 - 04", ...
         float prices_item_value = prices_item["value"];     // 2053.76, 2036.25, 2030.67, 2031.85, 2042.02, 2176.52, ...
 
-        this->prices.prices[i] = prices_item_value;
+        if (i <= sizeof(prices) - 1)
+        {
+            prices->prices[i] = prices_item_value;
+        }
         i++;
     }
     this->debug("Start META-data...");
     JsonObject meta = doc["meta"];
 
-    this->prices.min = meta["min"];               // 1977.85
-    this->prices.max = meta["max"];               // 6533.37
-    this->prices.average = meta["average"];       // 2577.98
-    this->prices.peak = meta["peak"];             // 2678.39
-    this->prices.off_peak_1 = meta["off_peak_1"]; // 2652.87
-    this->prices.off_peak_2 = meta["off_peak_2"]; // 2126.95
+    prices->min = meta["min"];               // 1977.85
+    prices->max = meta["max"];               // 6533.37
+    prices->average = meta["average"];       // 2577.98
+    prices->peak = meta["peak"];             // 2678.39
+    prices->off_peak_1 = meta["off_peak_1"]; // 2652.87
+    prices->off_peak_2 = meta["off_peak_2"]; // 2126.95
 }
 
 /**
@@ -274,7 +274,7 @@ void RESTReader::json()
  */
 void RESTReader::printPrizesSerial()
 {
-    for (float prize : this->prices.prices)
+    for (float prize : prices->prices)
     {
         Serial.print("time of day: ");
         // Serial.print(prize);
@@ -283,17 +283,17 @@ void RESTReader::printPrizesSerial()
     }
 
     Serial.print(", meta_min: ");
-    Serial.println(this->prices.min);
+    Serial.println(prices->min);
     Serial.print(", meta_max: ");
-    Serial.println(this->prices.max);
+    Serial.println(prices->max);
     Serial.print(", meta_average: ");
-    Serial.println(this->prices.average);
+    Serial.println(prices->average);
     Serial.print(", meta_peak: ");
-    Serial.println(this->prices.peak);
+    Serial.println(prices->peak);
     Serial.print(", meta_off_peak_1: ");
-    Serial.println(this->prices.off_peak_1);
+    Serial.println(prices->off_peak_1);
     Serial.print(", meta_off_peak_2: ");
-    Serial.println(this->prices.off_peak_2);
+    Serial.println(prices->off_peak_2);
 }
 
 /**
@@ -301,31 +301,31 @@ void RESTReader::printPrizesSerial()
  *
  * @return a structure (struct) of prices, containing all the prices.
  */
-Prices RESTReader::getPrices()
-{
-    return this->prices;
-}
+// Prices RESTReader::getPrices()
+// {
+//     return this->prices;
+// }
 
 void RESTReader::convertPriceUnit(float unit)
 {
-    int arrLength = sizeof(this->prices.prices) / 4;    
+    int arrLength = sizeof(prices->prices) / 4;
     for (int i = 0; i < arrLength; i++)
     {
-        this->prices.prices[i] = this->prices.prices[i] * unit;
+        prices->prices[i] = prices->prices[i] * unit;
     }
-    this->prices.min *= unit;
-    this->prices.max *= unit;
-    this->prices.average *= unit;
-    this->prices.peak *= unit;
-    this->prices.off_peak_1 *= unit;
-    this->prices.off_peak_2 *= unit;
+    prices->min *= unit;
+    prices->max *= unit;
+    prices->average *= unit;
+    prices->peak *= unit;
+    prices->off_peak_1 *= unit;
+    prices->off_peak_2 *= unit;
 }
 
 /**
  * @brief Debug method for enabling internal serial printing.
  * NEEDS serialBegin to be activatet outside this class!
- * 
- * @param msg 
+ *
+ * @param msg
  */
 void RESTReader::debug(char *msg)
 {

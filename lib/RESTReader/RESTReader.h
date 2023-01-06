@@ -24,13 +24,13 @@ private:
 
 public:
     /// PUBLIC PROPERTIES
-    Prices prices; 
+    Prices *prices; 
     bool shouldDebug = true;
     EthernetClient client;
-    char server[]; // name address for Google (using DNS)
+    char server[50]; // name address for Google (using DNS)
 
     /// PUBLIC METHODS
-    RESTReader(); /// @brief Construct a new RESTReader object
+    RESTReader(Prices *p); /// @brief Construct a new RESTReader object
     ~RESTReader(); /// @brief Destroy the RESTReader object
     void test();
     bool checkHTTPstatus();
@@ -39,7 +39,7 @@ public:
     void DEBUG_printOneLineFromHTTP();
     void json();
     void printPrizesSerial();
-    Prices getPrices();
+    // Prices getPrices();
     void convertPriceUnit(float unit);
     void debug(char *msg);
 

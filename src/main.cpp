@@ -19,6 +19,7 @@
 Debugger debugger;
 JpModbus modbus;
 Prices prices;
+RESTReader *restReader;
 
 bool getNewData = true;
 const unsigned long eventInterval = 10000;
@@ -27,16 +28,16 @@ unsigned long previousTime = 0;
 void getData()
 {
 
-    RESTReader restReader;
-    restReader.test();
-    restReader.checkHTTPstatus();
-    restReader.SkipHTTPheaders();
-    restReader.json();
-    restReader.printPrizesSerial();
-    restReader.convertPriceUnit(1);
-    restReader.printPrizesSerial();
-    prices = restReader.getPrices();
-    restReader.~RESTReader();
+    // RESTReader restReader(&prices);
+    restReader->test();
+    restReader->checkHTTPstatus();
+    restReader->SkipHTTPheaders();
+    restReader->json();
+    restReader->printPrizesSerial();
+    // restReader->convertPriceUnit(1);
+    // restReader->printPrizesSerial();
+    // prices = restReader->getPrices();
+    // restReader->~RESTReader();
 }
 
 void sendData()
@@ -47,7 +48,7 @@ void sendData()
 
 void setup()
 {
-
+    restReader = new RESTReader(&prices);
     debugger.startSerial();
     modbus.Begin();
 }
@@ -72,6 +73,8 @@ void loop()
 
         /* Update the timing for the next time around */
         previousTime = currentTime;
+        
+        getNewData = true;
     }
 
     

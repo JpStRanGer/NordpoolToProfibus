@@ -40,7 +40,7 @@ private:
 public:
     JpModbus();
     void Begin();
-    void updateHoldingRegister(Prices prices);
+    void updateHoldingRegister(const Prices& prices);
     void pollDataOnce();
     void TestToWriteData();
     void debug(char *msg);
@@ -90,7 +90,7 @@ void JpModbus::Begin()
  *
  * @param prices (struct)
  */
-void JpModbus::updateHoldingRegister(Prices data)
+void JpModbus::updateHoldingRegister(const Prices& data)
 {
     /// @brief write META-data to holdingRegisterWrite
     /// @param data is of type Prices struct
