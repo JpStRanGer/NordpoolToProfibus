@@ -16,13 +16,13 @@
 #include <structs.h>
 
 /// @brief
-Debugger debugger;
+// Debugger debugger;
 JpModbus modbus;
 Prices prices;
 RESTReader *restReader;
 
 bool getNewData = true;
-const unsigned long eventInterval = 10000;
+const unsigned long eventInterval = 10*1000;
 unsigned long previousTime = 0;
 
 void getData()
@@ -33,7 +33,7 @@ void getData()
     restReader->checkHTTPstatus();
     restReader->SkipHTTPheaders();
     restReader->json();
-    restReader->printPrizesSerial();
+    // restReader->printPrizesSerial();
     // restReader->convertPriceUnit(1);
     // restReader->printPrizesSerial();
     // prices = restReader->getPrices();
@@ -49,7 +49,7 @@ void sendData()
 void setup()
 {
     restReader = new RESTReader(&prices);
-    debugger.startSerial();
+    // debugger.startSerial();
     modbus.Begin();
 }
 

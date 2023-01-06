@@ -42,8 +42,8 @@ public:
     void Begin();
     void updateHoldingRegister(const Prices& prices);
     void pollDataOnce();
-    void TestToWriteData();
-    void debug(char *msg);
+    // void TestToWriteData();
+    // void debug(char *msg);
 };
 
 /**
@@ -118,18 +118,18 @@ void JpModbus::pollDataOnce()
     ModbusRTUServer.poll();
 }
 
-void JpModbus::TestToWriteData()
-{
-    ModbusRTUServer.holdingRegisterWrite(0x00, float(10.56));
-    ModbusRTUServer.holdingRegisterWrite(0x01, float(20));
-    ModbusRTUServer.holdingRegisterWrite(0x02, float(30));
-    ModbusRTUServer.holdingRegisterWrite(0x03, float(40));
-    ModbusRTUServer.holdingRegisterWrite(0x04, float(50.87));
-    ModbusRTUServer.holdingRegisterWrite(0x05, float(660.929));
-    ModbusRTUServer.holdingRegisterWrite(0x06, float(70));
-    ModbusRTUServer.holdingRegisterWrite(0x07, float(80));
-    ModbusRTUServer.holdingRegisterWrite(0x08, float(90));
-}
+// void JpModbus::TestToWriteData()
+// {
+//     ModbusRTUServer.holdingRegisterWrite(0x00, float(10.56));
+//     ModbusRTUServer.holdingRegisterWrite(0x01, float(20));
+//     ModbusRTUServer.holdingRegisterWrite(0x02, float(30));
+//     ModbusRTUServer.holdingRegisterWrite(0x03, float(40));
+//     ModbusRTUServer.holdingRegisterWrite(0x04, float(50.87));
+//     ModbusRTUServer.holdingRegisterWrite(0x05, float(660.929));
+//     ModbusRTUServer.holdingRegisterWrite(0x06, float(70));
+//     ModbusRTUServer.holdingRegisterWrite(0x07, float(80));
+//     ModbusRTUServer.holdingRegisterWrite(0x08, float(90));
+// }
 
 /**
  * @brief Debug method for enabling internal serial printing.
@@ -137,16 +137,16 @@ void JpModbus::TestToWriteData()
  *
  * @param msg
  */
-void JpModbus::debug(char *msg)
-{
-    if (!this->shouldDebug)
-        return;
+// void JpModbus::debug(char *msg)
+// {
+//     if (!this->shouldDebug)
+//         return;
 
-    char buff[180];
-    sprintf(buff, "DEBUG:\t%s\n", msg);
-    Serial.print(buff);
+//     char buff[180];
+//     sprintf(buff, "DEBUG:\t%s\n", msg);
+//     Serial.print(buff);
 
-    // Serial.print("DEBUG: ");
-    // Serial.println(msg);
-}
+//     // Serial.print("DEBUG: ");
+//     // Serial.println(msg);
+// }
 #endif

@@ -244,17 +244,18 @@ void RESTReader::json()
         Serial.println(doc.capacity());
         return;
     }
-    int i = 0;
+    long i = 0;
     this->debug("Start FOR-loop...");
     for (JsonObject prices_item : doc["data"].as<JsonArray>())
     {
         const char *prices_item_name = prices_item["name"]; // "00 - 01", "01 - 02", "02 - 03", "03 - 04", ...
         float prices_item_value = prices_item["value"];     // 2053.76, 2036.25, 2030.67, 2031.85, 2042.02, 2176.52, ...
 
-        if (i <= sizeof(prices) - 1)
-        {
+
+        // if (i <= (long)sizeof(prices) - 1)
+        // {
             prices->prices[i] = prices_item_value;
-        }
+        // }
         i++;
     }
     this->debug("Start META-data...");
