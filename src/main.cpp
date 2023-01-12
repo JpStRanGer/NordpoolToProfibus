@@ -43,7 +43,8 @@ void getData()
 void sendData()
 {
     modbus.updateHoldingRegister(prices);
-    modbus.pollDataOnce();
+    // modbus.TestToWriteData();
+    // modbus.pollDataOnce();
 }
 
 void setup()
@@ -73,9 +74,8 @@ void loop()
 
         /* Update the timing for the next time around */
         previousTime = currentTime;
-        
+
         getNewData = true;
     }
-
-    
+    modbus.pollDataOnce();
 }

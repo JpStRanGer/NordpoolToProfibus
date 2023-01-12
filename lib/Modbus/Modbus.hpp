@@ -107,7 +107,7 @@ void JpModbus::updateHoldingRegister(const Prices& data)
     int firstHoureRegister = 6;
     for (float price : data.prices)
     {
-        ModbusRTUServer.holdingRegisterWrite(i + firstHoureRegister, int(price));
+    ModbusRTUServer.holdingRegisterWrite(i + firstHoureRegister, int(price));
         i++;
     }
 }
