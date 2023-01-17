@@ -33,7 +33,7 @@ void getData()
     restReader->checkHTTPstatus();
     restReader->SkipHTTPheaders();
     restReader->json();
-    restReader->printPrizesSerial();
+    prices.print_prices();
     // restReader->convertPriceUnit(1);
     // restReader->printPrizesSerial();
     // prices = restReader->getPrices();

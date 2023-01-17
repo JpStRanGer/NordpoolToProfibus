@@ -248,13 +248,13 @@ void RESTReader::json()
     this->debug("Start FOR-loop...");
     for (JsonObject prices_item : doc["data"].as<JsonArray>())
     {
-        const char *prices_item_name = prices_item["name"]; // "00 - 01", "01 - 02", "02 - 03", "03 - 04", ...
+        // const char *prices_item_name = prices_item["name"]; // "00 - 01", "01 - 02", "02 - 03", "03 - 04", ...
         float prices_item_value = prices_item["value"];     // 2053.76, 2036.25, 2030.67, 2031.85, 2042.02, 2176.52, ...
 
-        // if (i <= sizeof(prices) - 1)
-        // {
-            prices->prices[i] = prices_item_value;
-        // }
+        if (i <= sizeof(prices->hour_prices) - 1)
+        {
+            prices->hour_prices[i] = prices_item_value;
+        }
         i++;
     }
     this->debug("Start META-data...");
@@ -274,7 +274,7 @@ void RESTReader::json()
  */
 void RESTReader::printPrizesSerial()
 {
-    for (float prize : prices->prices)
+    for (float prize : prices->hour_prices)
     {
         Serial.print("time of day: ");
         // Serial.print(prize);
@@ -308,10 +308,10 @@ void RESTReader::printPrizesSerial()
 
 void RESTReader::convertPriceUnit(float unit)
 {
-    int arrLength = sizeof(prices->prices) / 4;
+    int arrLength = sizeof(prices->hour_prices) / 4;
     for (int i = 0; i < arrLength; i++)
     {
-        prices->prices[i] = prices->prices[i] * unit;
+        prices->hour_prices[i] = prices->hour_prices[i] * unit;
     }
     prices->min *= unit;
     prices->max *= unit;
