@@ -13,27 +13,28 @@ struct Prices
     void print_prices()
     {
         // for (float& p : hour_prices)
-        for (int i = 0; i < sizeof(hour_prices); i++)
+        for (size_t i = 0; i < sizeof(hour_prices); i++)
         {
             Serial.print("time of day: ");
             Serial.print(i);
             Serial.print(", value: ");
-            Serial.println(p);
+            Serial.println(hour_prices[i]);
         }
 
         Serial.print(", meta_min: ");
-        Serial.println(prices->min);
+        Serial.println(min);
         Serial.print(", meta_max: ");
-        Serial.println(prices->max);
+        Serial.println(max);
         Serial.print(", meta_average: ");
-        Serial.println(prices->average);
+        Serial.println(average);
         Serial.print(", meta_peak: ");
-        Serial.println(prices->peak);
+        Serial.println(peak);
         Serial.print(", meta_off_peak_1: ");
-        Serial.println(prices->off_peak_1);
+        Serial.println(off_peak_1);
         Serial.print(", meta_off_peak_2: ");
-        Serial.println(prices->off_peak_2);
+        Serial.println(off_peak_2);
     }
+
 };
 
 #endif

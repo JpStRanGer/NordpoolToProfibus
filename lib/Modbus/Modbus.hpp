@@ -25,13 +25,11 @@
 #include <Arduino.h>
 #include <ArduinoRS485.h> // ArduinoModbus depends on the ArduinoRS485 library
 #include <ArduinoModbus.h>
-#include <structs.h>
+#include "Prices.h"
 
 class JpModbus
 {
 private:
-    bool shouldDebug;
-    Prices prices;
     // const int _numCoils = 10;
     // const int _numDiscreteInputs = 10;
     const int _numHoldingRegisters = 40;
@@ -40,10 +38,9 @@ private:
 public:
     JpModbus();
     void Begin();
-    void updateHoldingRegister(const Prices& prices);
+    void updateHoldingRegister(const Prices &prices);
     void pollDataOnce();
     void TestToWriteData();
-    void debug(char *msg);
 };
 
 /**
@@ -78,7 +75,7 @@ void JpModbus::Begin()
     // ModbusRTUServer.configureDiscreteInputs(0x00, this->_numDiscreteInputs);
 
     // configure holding registers at address 0x00
-    ModbusRTUServer.configureHoldingRegisters(0x00, this->_numHoldingRegisters);
+    ModbusRTUServer.configureHoldingRegisters(0x00, _numHoldingRegisters);
 
     // // configure input registers at address 0x00
     // ModbusRTUServer.configureInputRegisters(0x00, this->_numInputRegisters);
@@ -90,7 +87,7 @@ void JpModbus::Begin()
  *
  * @param prices (struct)
  */
-void JpModbus::updateHoldingRegister(const Prices& data)
+void JpModbus::updateHoldingRegister(const Prices &data)
 {
     /// @brief write META-data to holdingRegisterWrite
     /// @param data is of type Prices struct
@@ -105,9 +102,10 @@ void JpModbus::updateHoldingRegister(const Prices& data)
     /// @param data
     int i = 0;
     int firstHoureRegister = 6;
-    for (float price : data.hour_prices)
+    for (const float& price : data.hour_prices)
     {
-    ModbusRTUServer.holdingRegisterWrite(i + firstHoureRegister, int(price));
+        uint16_t v = (uint16_t)price;
+        ModbusRTUServer.holdingRegisterWrite(i + firstHoureRegister, v);
         i++;
     }
 }
@@ -131,22 +129,4 @@ void JpModbus::TestToWriteData()
     ModbusRTUServer.holdingRegisterWrite(0x08, float(90));
 }
 
-/**
- * @brief Debug method for enabling internal serial printing.
- * NEEDS serialBegin to be activatet outside this class!
- *
- * @param msg
- */
-void JpModbus::debug(char *msg)
-{
-    if (!this->shouldDebug)
-        return;
-
-    char buff[180];
-    sprintf(buff, "DEBUG:\t%s\n", msg);
-    Serial.print(buff);
-
-    // Serial.print("DEBUG: ");
-    // Serial.println(msg);
-}
 #endif

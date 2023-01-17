@@ -10,10 +10,10 @@
  */
 
 #include <Arduino.h>
-#include <Debugger.hpp>
-#include <Modbus.hpp>
-#include <RESTReader.h>
-#include <structs.h>
+#include "Debugger.hpp"
+#include "Modbus.hpp"
+#include "RESTReader.h"
+#include "Prices.h"
 
 /// @brief
 Debugger debugger;
@@ -27,24 +27,24 @@ unsigned long previousTime = 0;
 
 void getData()
 {
+    if (restReader->connect() == 0)
+        return;
 
-    // RESTReader restReader(&prices);
-    restReader->test();
-    restReader->checkHTTPstatus();
-    restReader->SkipHTTPheaders();
-    restReader->json();
+    if (!restReader->checkHTTPstatus())
+        return;
+
+    if (restReader->SkipHTTPheaders())
+        return;
+
+    if (restReader->parse_payload())
+        return;
+
     prices.print_prices();
-    // restReader->convertPriceUnit(1);
-    // restReader->printPrizesSerial();
-    // prices = restReader->getPrices();
-    // restReader->~RESTReader();
 }
 
 void sendData()
 {
     modbus.updateHoldingRegister(prices);
-    // modbus.TestToWriteData();
-    // modbus.pollDataOnce();
 }
 
 void setup()
