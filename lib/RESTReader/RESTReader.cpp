@@ -26,11 +26,13 @@ RESTReader::RESTReader(Prices *p) : prices_(p)
     Serial.println("call function: startEthernet()");
     // Enter a MAC address for your controller below.
     // Newer Ethernet shields have a MAC address printed on a sticker on the shield
-    byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
+    // byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED}; Debug MAC-adresse, kun for de
+    byte mac[] = {0x42, 0x5F, 0xB5, 0xDF, 0xEF, 0x22};
 
     // Set the static IP address to use if the DHCP fails to assign
-    IPAddress ip(192, 168, 100, 105);
-    IPAddress myDns(192, 168, 0, 1);
+    // IPAddress ip(192, 168, 100, 105); Admin-nettadresse for DEBUG
+    IPAddress ip(192, 168, 20, 11);
+    IPAddress myDns(192, 168, 20, 1); // 
 
     // start the Ethernet connection:
     Serial.println("Initialize Ethernet with DHCP:");
