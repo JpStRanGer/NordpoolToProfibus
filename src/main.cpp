@@ -49,8 +49,8 @@ void sendData()
 
 void setup()
 {
-    restReader = new RESTReader(&prices);
     debugger.startSerial();
+    restReader = new RESTReader(&prices);
     modbus.Begin();
 }
 
