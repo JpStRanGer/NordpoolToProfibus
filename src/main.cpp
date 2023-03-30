@@ -22,22 +22,34 @@ Prices prices;
 RESTReader *restReader;
 
 bool getNewData = true;
-const unsigned long eventInterval = 10000;
+const unsigned long eventInterval = 3600000;
 unsigned long previousTime = 0;
 
 void getData()
 {
     if (restReader->connect() == 0)
+    {
+        Serial.print("Error: did not connect!");
         return;
+    }
 
     if (!restReader->checkHTTPstatus())
+    {
+        Serial.print("Error: check HTTP status");
         return;
+    }
 
-    if (restReader->SkipHTTPheaders())
+    if (!restReader->SkipHTTPheaders())
+    {
+        Serial.print("Error: Skip HTTP headers");
         return;
+    }
 
-    if (restReader->parse_payload())
+    if (!restReader->parse_payload())
+    {
+        Serial.print("Error: parse payload");
         return;
+    }
 
     prices.print_prices();
 }
@@ -52,6 +64,7 @@ void setup()
     debugger.startSerial();
     restReader = new RESTReader(&prices);
     modbus.Begin();
+    // modbus.TestToWriteData();
 }
 
 void loop()
@@ -77,5 +90,8 @@ void loop()
 
         getNewData = true;
     }
+
+    // delay(1000);
     modbus.pollDataOnce();
+    // Serial.println("poll");
 }

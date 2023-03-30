@@ -57,7 +57,7 @@ JpModbus::JpModbus()
  */
 void JpModbus::Begin()
 {
-    Serial.println("Modbus RTU Server Kitchen Sink");
+    Serial.println("Modbus RTU Server Begin Start..");
     delay(1000);
 
     // start the Modbus RTU server, with (slave) id 4
@@ -80,6 +80,7 @@ void JpModbus::Begin()
     // // configure input registers at address 0x00
     // ModbusRTUServer.configureInputRegisters(0x00, this->_numInputRegisters);
     // Serial.println("Modbus RTU configureInputRegisters ");
+    Serial.println("Modbus RTU Server Begin end..");
 }
 
 /**
@@ -114,6 +115,7 @@ void JpModbus::pollDataOnce()
 {
 
     ModbusRTUServer.poll();
+    // Serial.println("Polling modbus...");
 }
 
 void JpModbus::TestToWriteData()

@@ -80,7 +80,7 @@ RESTReader::~RESTReader()
  */
 int RESTReader::connect()
 {
-    Serial.println("running test() from RESTReader...");
+    Serial.println("running connect() from RESTReader...");
 
     // give the Ethernet shield a second to initialize:
     delay(1000);
@@ -271,6 +271,8 @@ bool RESTReader::parse_payload()
         i++;
     }
 
+    Serial.print("Number of values:");
+    Serial.println(i);
     Serial.println("Start META-data...");
     JsonObject meta = doc["meta"];
 
