@@ -22,7 +22,7 @@ Prices prices;
 RESTReader *restReader;
 
 bool getNewData = true;
-const unsigned long eventInterval = 3600000;
+const unsigned long eventInterval = 1800000;
 unsigned long previousTime = 0;
 
 void getData()
