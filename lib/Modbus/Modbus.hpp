@@ -25,13 +25,11 @@
 #include <Arduino.h>
 #include <ArduinoRS485.h> // ArduinoModbus depends on the ArduinoRS485 library
 #include <ArduinoModbus.h>
-#include <structs.h>
+#include "Prices.h"
 
 class JpModbus
 {
 private:
-    bool shouldDebug;
-    Prices prices;
     // const int _numCoils = 10;
     // const int _numDiscreteInputs = 10;
     const int _numHoldingRegisters = 40;
@@ -40,10 +38,9 @@ private:
 public:
     JpModbus();
     void Begin();
-    void updateHoldingRegister(Prices prices);
+    void updateHoldingRegister(const Prices &prices);
     void pollDataOnce();
     void TestToWriteData();
-    void debug(char *msg);
 };
 
 /**
@@ -60,7 +57,7 @@ JpModbus::JpModbus()
  */
 void JpModbus::Begin()
 {
-    Serial.println("Modbus RTU Server Kitchen Sink");
+    Serial.println("Modbus RTU Server Begin Start..");
     delay(1000);
 
     // start the Modbus RTU server, with (slave) id 4
@@ -78,11 +75,12 @@ void JpModbus::Begin()
     // ModbusRTUServer.configureDiscreteInputs(0x00, this->_numDiscreteInputs);
 
     // configure holding registers at address 0x00
-    ModbusRTUServer.configureHoldingRegisters(0x00, this->_numHoldingRegisters);
+    ModbusRTUServer.configureHoldingRegisters(0x00, _numHoldingRegisters);
 
     // // configure input registers at address 0x00
     // ModbusRTUServer.configureInputRegisters(0x00, this->_numInputRegisters);
     // Serial.println("Modbus RTU configureInputRegisters ");
+    Serial.println("Modbus RTU Server Begin end..");
 }
 
 /**
@@ -90,7 +88,7 @@ void JpModbus::Begin()
  *
  * @param prices (struct)
  */
-void JpModbus::updateHoldingRegister(Prices data)
+void JpModbus::updateHoldingRegister(const Prices &data)
 {
     /// @brief write META-data to holdingRegisterWrite
     /// @param data is of type Prices struct
@@ -105,9 +103,10 @@ void JpModbus::updateHoldingRegister(Prices data)
     /// @param data
     int i = 0;
     int firstHoureRegister = 6;
-    for (float price : data.prices)
+    for (const float& price : data.hour_prices)
     {
-        ModbusRTUServer.holdingRegisterWrite(i + firstHoureRegister, int(price));
+        uint16_t v = (uint16_t)price;
+        ModbusRTUServer.holdingRegisterWrite(i + firstHoureRegister, v);
         i++;
     }
 }
@@ -116,6 +115,7 @@ void JpModbus::pollDataOnce()
 {
 
     ModbusRTUServer.poll();
+    // Serial.println("Polling modbus...");
 }
 
 void JpModbus::TestToWriteData()
@@ -131,22 +131,4 @@ void JpModbus::TestToWriteData()
     ModbusRTUServer.holdingRegisterWrite(0x08, float(90));
 }
 
-/**
- * @brief Debug method for enabling internal serial printing.
- * NEEDS serialBegin to be activatet outside this class!
- *
- * @param msg
- */
-void JpModbus::debug(char *msg)
-{
-    if (!this->shouldDebug)
-        return;
-
-    char buff[180];
-    sprintf(buff, "DEBUG:\t%s\n", msg);
-    Serial.print(buff);
-
-    // Serial.print("DEBUG: ");
-    // Serial.println(msg);
-}
 #endif
