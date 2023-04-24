@@ -24,30 +24,35 @@ RESTReader *restReader;
 bool getNewData = true;
 const unsigned long eventInterval = 1800000;
 unsigned long previousTime = 0;
+unsigned int *errorCode = 0;
 
 void getData()
 {
     if (restReader->connect() == 0)
     {
         Serial.print("Error: did not connect!");
+        errorCode = 1;
         return;
     }
 
     if (!restReader->checkHTTPstatus())
     {
         Serial.print("Error: check HTTP status");
+        errorCode = 2;
         return;
     }
 
     if (!restReader->SkipHTTPheaders())
     {
         Serial.print("Error: Skip HTTP headers");
+        errorCode = 3;
         return;
     }
 
     if (!restReader->parse_payload())
     {
         Serial.print("Error: parse payload");
+        errorCode = 4;
         return;
     }
 
