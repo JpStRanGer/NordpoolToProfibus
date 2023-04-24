@@ -38,7 +38,7 @@ private:
 public:
     JpModbus();
     void Begin();
-    void updateHoldingRegister(const Prices &prices);
+    void updateHoldingRegister(const Prices &prices, int &errorCode);
     void pollDataOnce();
     void TestToWriteData();
 };
@@ -88,7 +88,7 @@ void JpModbus::Begin()
  *
  * @param prices (struct)
  */
-void JpModbus::updateHoldingRegister(const Prices &data)
+void JpModbus::updateHoldingRegister(const Prices &data, int &errorCode)
 {
     /// @brief write META-data to holdingRegisterWrite
     /// @param data is of type Prices struct
@@ -98,7 +98,7 @@ void JpModbus::updateHoldingRegister(const Prices &data)
     ModbusRTUServer.holdingRegisterWrite(0x03, int(data.peak));
     ModbusRTUServer.holdingRegisterWrite(0x04, int(data.off_peak_1));
     ModbusRTUServer.holdingRegisterWrite(0x05, int(data.off_peak_2));
-    ModbusRTUServer.holdingRegisterWrite(0x30, int(data.off_peak_2));
+    ModbusRTUServer.holdingRegisterWrite(0x30, errorCode);
 
     /// @brief loop throw all prices in array and write them to register
     /// @param data

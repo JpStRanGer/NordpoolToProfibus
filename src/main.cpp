@@ -24,7 +24,7 @@ RESTReader *restReader;
 bool getNewData = true;
 const unsigned long eventInterval = 1800000;
 unsigned long previousTime = 0;
-unsigned int *errorCode = 0;
+int errorCode = 0;
 
 void getData()
 {
@@ -61,7 +61,7 @@ void getData()
 
 void sendData()
 {
-    modbus.updateHoldingRegister(prices);
+    modbus.updateHoldingRegister(prices, errorCode);
 }
 
 void setup()
